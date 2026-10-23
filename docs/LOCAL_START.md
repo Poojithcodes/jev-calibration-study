@@ -1,7 +1,11 @@
 # Local setup and shared splits — 23 October 2026
 
 Project: jev-calibration, extracted from Mohak's supplied ZIP. No paid API calls made.
-Use the existing Python 3.12 environment at ../jev-study/.venv/Scripts/python.exe.
+The original extraction uses the Python 3.12 environment at
+`C:/Users/pooji/Documents/Codex/2026-10-17/new-chat/jev-study/.venv/Scripts/python.exe`.
+The active Git checkout is now `C:/Users/pooji/OneDrive/Documents/ChatGPT/Jev/jev-calibration-study`.
+The relative `../jev-study/` commands below apply to the original extraction only;
+in the Git checkout use that absolute interpreter or create `.venv` as described below.
 Base data/scoring dependencies are installed; all 16 supplied tests pass.
 GPU PyTorch 2.11.0+cu128 is installed. CUDA forward/backward computation and the
 SetFit pilot passed on the RTX 3050 6 GB (driver 581.86, CUDA runtime 12.8).
@@ -92,3 +96,32 @@ The runner refuses to overwrite an existing pilot output directory. Preserve the
 pilot artifacts before a new run; the runner records the resolved upstream model revision.
 Next milestone: agree on settings and the Banking77 budget limitation before the full grid.
 Continue using development examples for debugging; keep final test scoring until settings freeze.
+
+## Completed ModernBERT pilot
+
+AG News budget 8, seed 13, using exactly the same 32 training and 100 development IDs.
+`answerdotai/ModernBERT-base` revision `8949b909ec900327062f0ebf497f51aef5e6f0c8`.
+Settings are recorded in `configs/modernbert_pilot.json`: 10 epochs, 2-example microbatches,
+8-step gradient accumulation (effective batch 16), learning rate 2e-5, sequence length 256,
+FP16 mixed precision, gradient checkpointing, and SDPA attention without compilation.
+
+Development accuracy: 0.72; macro-F1: 0.7150977664. Training took 87.0934 seconds;
+peak allocated CUDA memory was 3,111,879,168 bytes (2.90 GiB). Of 20 attempted optimizer
+updates, 2 were skipped by the gradient scaler; the scheduler advanced on 18 successful
+updates. Review mixed-precision scaling before freezing full-grid settings. No development
+metrics were used for early stopping or checkpoint selection.
+
+The checkpoint was reloaded and its first two development logits matched the saved run.
+All 100 predictions passed the shared contract; all 44 shared hashes remained unchanged.
+Calibration and official test examples were not evaluated. These single-seed development
+results do not establish that one model is better than the other.
+
+Artifacts: `reports/pilots/modernbert/ag_news__b8__s13/`. Runner:
+`python scripts/run_modernbert_pilot.py`. Download the revision pinned in the config with
+Hugging Face `snapshot_download` first; the runner deliberately loads local files only.
+The runner refuses to overwrite an existing pilot output directory.
+
+`python scripts/plan_encoder_grid.py` generates `reports/encoder_grid_plan.json` from
+the existing manifests. The 60-run plan remains pending protocol agreement and settings
+freeze; generating it launches neither training nor scoring. The test suite now has 21
+passing tests, including raw-snapshot and manifest-isolation safeguards.

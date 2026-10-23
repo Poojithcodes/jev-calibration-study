@@ -8,7 +8,10 @@ Proposal and team split: the "Jev Calibration Study — Revised Research Proposa
 Shared manifests and split audits are prepared. GPU setup and the SetFit AG News
 budget-8, seed-13 development pilot are complete: 32 training examples, 100 development
 examples, 80% development accuracy, macro-F1 0.7965. Calibration and official test
-evaluation remain pending. See [local setup and pilot details](docs/LOCAL_START.md)
+evaluation remain pending. The matching ModernBERT pilot is also complete: 72% development
+accuracy, macro-F1 0.7151, with checkpoint reload verified. These are single-seed development
+checks, not final model comparisons. All 21 tests pass; a manifest-backed 60-run plan is
+prepared but has not been launched. See [local setup and pilot details](docs/LOCAL_START.md)
 and [saved results](reports/pilots/setfit/ag_news__b8__s13/result.json).
 
 ## Setup (once)
@@ -16,7 +19,7 @@ and [saved results](reports/pilots/setfit/ag_news__b8__s13/result.json).
 ```bash
 pip install -r requirements.txt
 copy .env.example .env      # Windows (macOS/Linux: cp); then paste your OpenRouter key into .env
-python -m pytest -q         # 16 tests should pass
+python -m pytest -q         # 21 tests should pass
 ```
 
 The loader downloads missing datasets automatically into `data/raw/`. For the shared
