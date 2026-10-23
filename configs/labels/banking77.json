@@ -160,7 +160,7 @@
     },
     {
       "name": "get_physical_card",
-      "description": "Getting a physical card"
+      "description": "Getting a physical card, or finding the PIN for a new card"
     },
     {
       "name": "getting_spare_card",

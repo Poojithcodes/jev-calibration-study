@@ -12,11 +12,11 @@
     },
     {
       "name": "Business",
-      "description": "Companies, markets, economy and finance"
+      "description": "Markets, the economy, finance, trade and non-technology companies"
     },
     {
       "name": "Sci/Tech",
-      "description": "Science, technology, computing, internet and space"
+      "description": "Science, space and the technology industry: computing, internet, software, gadgets, video games and tech companies, including their business news"
     }
   ],
   "status": "DRAFT - check wording on dev examples only; freeze on Day 5"

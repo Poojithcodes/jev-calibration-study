@@ -42,3 +42,14 @@ python scripts/run_jev.py --config configs/labels/clinc150_oos_option.json --spl
 
 Headline collection for AG-Fresh-2026 runs daily from 24 Oct (`scripts/collect_headlines.py --since 2026-10-22`);
 annotation sheets on 26 Oct; both annotators label independently on 26–27 Oct.
+
+## Label wording log (dev data only)
+
+| Date | Config | Change | Evidence (dev pilot, Jev 1.13-20260917) |
+| --- | --- | --- | --- |
+| 24 Oct | ag_news | Business and Sci/Tech descriptions: tech-company news (lawsuits, earnings, patents) belongs to Sci/Tech, matching AG News's labelling convention | Round 0: 83.0% acc, ECE 0.132; 6 of 17 errors were Sci/Tech -> Business |
+| 24 Oct | banking77 | get_physical_card now covers "finding the PIN for a new card" | Round 0: 78.2% acc, ECE 0.119; top confusion get_physical_card -> change_pin (5 of 5 were PIN questions) |
+
+Bare-label ablation, round 0 on Banking77 dev: 77.4% acc, ECE 0.102 (descriptions +0.8 pts accuracy).
+CLINC150 dev round 0: 94.7% acc, ECE 0.017 — no wording change; strong in-domain calibration is itself a contamination question for RQ2.
+Remaining errors on both datasets are mostly gold-label ambiguity (e.g. AG News "World" labels on Ryder Cup and F1 stories); no further wording rounds, to avoid tuning to dev noise.
