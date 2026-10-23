@@ -16,6 +16,9 @@ checks, not final model comparisons. All 21 tests pass; a manifest-backed 60-run
 prepared but has not been launched. See [local setup and pilot details](docs/LOCAL_START.md)
 and [saved results](reports/pilots/setfit/ag_news__b8__s13/result.json).
 
+Decisions and open items since the pilots (Banking77 budgets, encoder settings to freeze by 27 Oct,
+Jev run commands): [docs/protocol_decisions.md](docs/protocol_decisions.md).
+
 ## Setup (once)
 
 ```bash
