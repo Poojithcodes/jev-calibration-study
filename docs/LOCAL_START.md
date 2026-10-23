@@ -125,3 +125,24 @@ The runner refuses to overwrite an existing pilot output directory.
 the existing manifests. The 60-run plan remains pending protocol agreement and settings
 freeze; generating it launches neither training nor scoring. The test suite now has 21
 passing tests, including raw-snapshot and manifest-isolation safeguards.
+
+### Numerical validation repeat
+
+The original run is preserved. A repeat changed only the initial FP16 loss scale from
+the PyTorch default 65536 to 1024; the acceptance criterion was set before the repeat:
+zero skipped optimizer updates, not improved development performance.
+All 20 updates completed and the learning-rate schedule reached zero. Development accuracy
+was 0.72 and macro-F1 0.7120972420; training took 89.3591 seconds with the same 2.90 GiB peak
+allocation. Checkpoint reload and all prediction/hash checks passed again.
+
+Artifacts: `reports/pilots/modernbert/ag_news__b8__s13__scale1024/`.
+Recommended numerical settings for the protocol freeze: `configs/modernbert_numerical_check.json`.
+Reproduction command (also refuses an existing output directory):
+
+```powershell
+python scripts/run_modernbert_pilot.py --config configs/modernbert_numerical_check.json --run-tag scale1024
+```
+
+The precision review is complete. Full-grid launch is still pending agreement on the
+Banking77 8/16 budgets and freezing the recorded model settings. No final predictions
+or final calibration/test metrics have been generated.

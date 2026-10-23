@@ -21,6 +21,8 @@ def main():
     p.add_argument('--dataset', choices=['ag_news', 'banking77', 'clinc150'], default='ag_news')
     p.add_argument('--budget', type=int, default=8)
     p.add_argument('--seed', type=int, default=13)
+    p.add_argument('--config', type=Path, default=ROOT / 'configs/modernbert_pilot.json')
+    p.add_argument('--run-tag', default='', help='Separate artifact directory for a numerical-validation repeat')
     a = p.parse_args()
     root = a.root.resolve()
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
@@ -35,9 +37,12 @@ def main():
 
     before = shared_hashes(root)
     order, train, dev = load_development_run(root, a.dataset, a.budget, a.seed)
-    cfg = json.loads((root / 'configs/modernbert_pilot.json').read_text())
+    if a.run_tag and not all(c.isalnum() or c in '-_' for c in a.run_tag):
+        p.error('--run-tag must contain only letters, digits, hyphens, or underscores')
+    cfg = json.loads(a.config.read_text())
     cfg.update(dataset=a.dataset, budget=a.budget, seed=a.seed)
-    out = root / f'reports/pilots/modernbert/{a.dataset}__b{a.budget}__s{a.seed}'
+    suffix = f'__{a.run_tag}' if a.run_tag else ''
+    out = root / f'reports/pilots/modernbert/{a.dataset}__b{a.budget}__s{a.seed}{suffix}'
     out.mkdir(parents=True, exist_ok=False)
     save = lambda name, value: (out / name).write_text(json.dumps(value, indent=2), encoding='utf-8')
     save('config.json', cfg)
@@ -71,7 +76,7 @@ def main():
     effective_batch = cfg['micro_batch_size'] * cfg['gradient_accumulation_steps']
     total_steps = math.ceil(len(train) / effective_batch) * cfg['epochs']
     scheduler = get_linear_schedule_with_warmup(optimizer, math.ceil(total_steps * cfg['warmup_ratio']), total_steps)
-    scaler = torch.amp.GradScaler('cuda')
+    scaler = torch.amp.GradScaler('cuda', init_scale=cfg.get('initial_loss_scale', 65536.0))
     history = []
     torch.cuda.reset_peak_memory_stats()
     start = time.perf_counter()
@@ -162,7 +167,7 @@ def main():
         csv.writer(f).writerow([datetime.now(timezone(timedelta(hours=5, minutes=30))).date(), 'Poojith', a.dataset, 'modernbert', '',
                               a.budget,a.seed,(out/'development_predictions.jsonl').relative_to(root).as_posix(),
                               checkpoint.relative_to(root).as_posix(),len(dev),seconds,0,True,
-                              'Development-only pilot; checkpoint reload verified; no final evaluation.'])
+                              f'Development-only pilot; checkpoint reload verified; no final evaluation. Variant: {a.run_tag or "initial"}.'])
     print(json.dumps(result, indent=2), flush=True)
 
 

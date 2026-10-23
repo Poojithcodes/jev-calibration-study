@@ -9,7 +9,9 @@ Shared manifests and split audits are prepared. GPU setup and the SetFit AG News
 budget-8, seed-13 development pilot are complete: 32 training examples, 100 development
 examples, 80% development accuracy, macro-F1 0.7965. Calibration and official test
 evaluation remain pending. The matching ModernBERT pilot is also complete: 72% development
-accuracy, macro-F1 0.7151, with checkpoint reload verified. These are single-seed development
+accuracy, macro-F1 0.7151, with checkpoint reload verified. A numerical-validation repeat
+at a lower FP16 loss scale completed all optimizer steps (72% accuracy, macro-F1 0.7121).
+Both runs are preserved. These are single-seed development
 checks, not final model comparisons. All 21 tests pass; a manifest-backed 60-run plan is
 prepared but has not been launched. See [local setup and pilot details](docs/LOCAL_START.md)
 and [saved results](reports/pilots/setfit/ag_news__b8__s13/result.json).
