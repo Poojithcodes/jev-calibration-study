@@ -1,0 +1,32 @@
+{
+  "ag_news/train.csv": {
+    "url": "https://raw.githubusercontent.com/mhjabreel/CharCnn_Keras/master/data/ag_news_csv/train.csv",
+    "sha256": "76a0a2d2f92b286371fe4d4044640910a04a803fdd2538e0f3f29a5c6f6b672e",
+    "bytes": 29470338,
+    "downloaded": "2026-10-23 12:39:12"
+  },
+  "ag_news/test.csv": {
+    "url": "https://raw.githubusercontent.com/mhjabreel/CharCnn_Keras/master/data/ag_news_csv/test.csv",
+    "sha256": "521465c2428ed7f02f8d6db6ffdd4b5447c1c701962353eb2c40d548c3c85699",
+    "bytes": 1857427,
+    "downloaded": "2026-10-23 12:39:23"
+  },
+  "banking77/train.csv": {
+    "url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/master/banking_data/train.csv",
+    "sha256": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b",
+    "bytes": 839073,
+    "downloaded": "2026-10-23 12:39:33"
+  },
+  "banking77/test.csv": {
+    "url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/master/banking_data/test.csv",
+    "sha256": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d",
+    "bytes": 239961,
+    "downloaded": "2026-10-23 12:39:37"
+  },
+  "clinc150/data_full.json": {
+    "url": "https://raw.githubusercontent.com/clinc/oos-eval/master/data/data_full.json",
+    "sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+    "bytes": 2495390,
+    "downloaded": "2026-10-23 12:40:31"
+  }
+}

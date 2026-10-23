@@ -1,0 +1,2 @@
+date,owner,dataset,model,label_config,budget,seed,prediction_file,model_snapshot_or_checkpoint,n_rows,train_seconds,api_cost_usd,validate_ok,notes
+2026-10-23,Poojith,ag_news,setfit,,8,13,reports\pilots\setfit\ag_news__b8__s13\development_predictions.jsonl,reports\pilots\setfit\ag_news__b8__s13\checkpoint,100,12.314425499993376,0,True,Development-only pilot; not final evaluation. See pilot config and result.

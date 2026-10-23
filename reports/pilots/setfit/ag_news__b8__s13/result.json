@@ -1,0 +1,13 @@
+{
+  "status": "completed_development_only",
+  "train_examples": 32,
+  "dev_examples": 100,
+  "development_accuracy": 0.8,
+  "development_macro_f1": 0.7964793640141445,
+  "train_seconds": 12.314425499993376,
+  "peak_cuda_allocated_bytes": 1334675968,
+  "validate_problems": [],
+  "shared_hashes_unchanged": true,
+  "official_test_evaluated": false,
+  "calibration_evaluated": false
+}

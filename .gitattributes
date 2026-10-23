@@ -1,0 +1,4 @@
+# Preserve byte-exact shared manifests and recorded SHA256 hashes across platforms.
+manifests/** -text whitespace=cr-at-eol
+reports/split_audit.json -text whitespace=cr-at-eol
+data/raw/SOURCES.json -text whitespace=cr-at-eol

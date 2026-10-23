@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+cache/
+preds/
+checkpoints/
+data/raw/*
+!data/raw/SOURCES.json
+results/
+reports/pilots/**/checkpoint/
+reports/pilots/**/training/

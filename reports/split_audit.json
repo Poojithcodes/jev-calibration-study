@@ -1,0 +1,483 @@
+{
+  "split_seed": 20261023,
+  "budgets": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "seeds": [
+    13,
+    42,
+    87
+  ],
+  "normalization": "casefold + collapse whitespace; SHA256",
+  "datasets": {
+    "ag_news": {
+      "classes": 4,
+      "available_budgets": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "minimum_training_pool_per_class": 29787,
+      "omitted_budgets": [],
+      "official_train": 120000,
+      "clean_train": 119809,
+      "removed_train_duplicates_conflicts_or_test_overlap": 191,
+      "calibration": 400,
+      "dev": 100,
+      "test": 7600,
+      "test_duplicate_text_rows": 0,
+      "class_order": [
+        "World",
+        "Sports",
+        "Business",
+        "Sci/Tech"
+      ],
+      "files": {
+        "ag_news_calibration_ids.txt": {
+          "count": 400,
+          "sha256": "d56149ca13ba2266b9eb393d487de65e01d5dcbfbcef7cdd3f9f631cd37972f2"
+        },
+        "ag_news_dev_ids.txt": {
+          "count": 100,
+          "sha256": "8579ac4e00e3316b5d886a7bf8580c0732dde5219a15f7cb170861c1f5459722"
+        },
+        "ag_news_test_ids.txt": {
+          "count": 7600,
+          "sha256": "af75684a5ec5358af0f2b5e966c878bdd252f35d8b7857e489d528eece9cd1c3"
+        },
+        "ag_news_train_b8_s13.txt": {
+          "count": 32,
+          "sha256": "7979433248a24cae8ce8f717c8067a5ecffb2bb5b39b7268f2479398b58fc8f2"
+        },
+        "ag_news_train_b16_s13.txt": {
+          "count": 64,
+          "sha256": "449d464138d0446009c06363de8642dfcbd1486ad70c4415ba9840cd5c97fe97"
+        },
+        "ag_news_train_b32_s13.txt": {
+          "count": 128,
+          "sha256": "607f6bf5b1493e19aed98fbb5297e9fc1278bf7feedf3dc2f76ddc47b283c454"
+        },
+        "ag_news_train_b64_s13.txt": {
+          "count": 256,
+          "sha256": "9ea2eff16e15f73975aee6c4b7c2020a9a558bef2afa8092b4781308693d9a1b"
+        },
+        "ag_news_train_b8_s42.txt": {
+          "count": 32,
+          "sha256": "2da7a72768e5faf794de3a56473e0663ef18838d8037324f7bdcf5242ec4f902"
+        },
+        "ag_news_train_b16_s42.txt": {
+          "count": 64,
+          "sha256": "8a913747d5414c46e8ee937f943ea2f37ce3acc166ec2a7a87bc4a642cbd7a91"
+        },
+        "ag_news_train_b32_s42.txt": {
+          "count": 128,
+          "sha256": "e22c6e0580271fed481e9e69304f0dd95d775ea38094603eeded8b1ca8cb8920"
+        },
+        "ag_news_train_b64_s42.txt": {
+          "count": 256,
+          "sha256": "c420c00015a198d814177dfe701620533bc2e579b7892eb736ac0b49f85bdef7"
+        },
+        "ag_news_train_b8_s87.txt": {
+          "count": 32,
+          "sha256": "1d02a341d7e3cd99bb1b5846d7524e8b49a0b7234e6c8e0bdf6f18a24d578dca"
+        },
+        "ag_news_train_b16_s87.txt": {
+          "count": 64,
+          "sha256": "6f9effe4063d2d16fb5167b0d326217e52a8e867065f69d7141240ecc6d28dd9"
+        },
+        "ag_news_train_b32_s87.txt": {
+          "count": 128,
+          "sha256": "1799d43ee1b40f6e3eb973f3cad496e0b8f2f81e2468d1997bad4af9613ed415"
+        },
+        "ag_news_train_b64_s87.txt": {
+          "count": 256,
+          "sha256": "2bdbf796032daf2f642ca7d8c726429f7824d91a3be5abb304b7faa149fde545"
+        },
+        "ag_news_jev_ids.txt": {
+          "count": 8000,
+          "sha256": "59002a1e64ba6a11d804a474d1507975e55c22a2a9d70501d5cc5fb5d87f2756"
+        }
+      }
+    },
+    "banking77": {
+      "classes": 77,
+      "available_budgets": [
+        8,
+        16
+      ],
+      "minimum_training_pool_per_class": 20,
+      "omitted_budgets": [
+        32,
+        64
+      ],
+      "official_train": 10003,
+      "clean_train": 9992,
+      "removed_train_duplicates_conflicts_or_test_overlap": 11,
+      "calibration": 770,
+      "dev": 385,
+      "test": 3080,
+      "test_duplicate_text_rows": 1,
+      "class_order": [
+        "Refund_not_showing_up",
+        "activate_my_card",
+        "age_limit",
+        "apple_pay_or_google_pay",
+        "atm_support",
+        "automatic_top_up",
+        "balance_not_updated_after_bank_transfer",
+        "balance_not_updated_after_cheque_or_cash_deposit",
+        "beneficiary_not_allowed",
+        "cancel_transfer",
+        "card_about_to_expire",
+        "card_acceptance",
+        "card_arrival",
+        "card_delivery_estimate",
+        "card_linking",
+        "card_not_working",
+        "card_payment_fee_charged",
+        "card_payment_not_recognised",
+        "card_payment_wrong_exchange_rate",
+        "card_swallowed",
+        "cash_withdrawal_charge",
+        "cash_withdrawal_not_recognised",
+        "change_pin",
+        "compromised_card",
+        "contactless_not_working",
+        "country_support",
+        "declined_card_payment",
+        "declined_cash_withdrawal",
+        "declined_transfer",
+        "direct_debit_payment_not_recognised",
+        "disposable_card_limits",
+        "edit_personal_details",
+        "exchange_charge",
+        "exchange_rate",
+        "exchange_via_app",
+        "extra_charge_on_statement",
+        "failed_transfer",
+        "fiat_currency_support",
+        "get_disposable_virtual_card",
+        "get_physical_card",
+        "getting_spare_card",
+        "getting_virtual_card",
+        "lost_or_stolen_card",
+        "lost_or_stolen_phone",
+        "order_physical_card",
+        "passcode_forgotten",
+        "pending_card_payment",
+        "pending_cash_withdrawal",
+        "pending_top_up",
+        "pending_transfer",
+        "pin_blocked",
+        "receiving_money",
+        "request_refund",
+        "reverted_card_payment?",
+        "supported_cards_and_currencies",
+        "terminate_account",
+        "top_up_by_bank_transfer_charge",
+        "top_up_by_card_charge",
+        "top_up_by_cash_or_cheque",
+        "top_up_failed",
+        "top_up_limits",
+        "top_up_reverted",
+        "topping_up_by_card",
+        "transaction_charged_twice",
+        "transfer_fee_charged",
+        "transfer_into_account",
+        "transfer_not_received_by_recipient",
+        "transfer_timing",
+        "unable_to_verify_identity",
+        "verify_my_identity",
+        "verify_source_of_funds",
+        "verify_top_up",
+        "virtual_card_not_working",
+        "visa_or_mastercard",
+        "why_verify_identity",
+        "wrong_amount_of_cash_received",
+        "wrong_exchange_rate_for_cash_withdrawal"
+      ],
+      "files": {
+        "banking77_calibration_ids.txt": {
+          "count": 770,
+          "sha256": "9ca8c1c8a02b9701ede195e561a1e6670a76df03daacb228b3eb62bdb915594a"
+        },
+        "banking77_dev_ids.txt": {
+          "count": 385,
+          "sha256": "1821c687c8206ec8135e34401a16d5ac70af04a1086ae6533017593da1f7d6ba"
+        },
+        "banking77_test_ids.txt": {
+          "count": 3080,
+          "sha256": "20d38965ac451d8d0dd6078e169a01141fac8e69dc64a92bd5427b9e7d8eadc3"
+        },
+        "banking77_train_b8_s13.txt": {
+          "count": 616,
+          "sha256": "7926350f6906c280f570d70079f03edde162fcfc5d8725d263f1b9c3a1aa4af1"
+        },
+        "banking77_train_b16_s13.txt": {
+          "count": 1232,
+          "sha256": "e11f1746f35430fd66ae1e64815c90d0e351094e887d34a9bf298445b57dd35f"
+        },
+        "banking77_train_b8_s42.txt": {
+          "count": 616,
+          "sha256": "a557f36d2126e524bf7bd1299a1ace7985d41eb9b57844e9b3321f5dd3213fae"
+        },
+        "banking77_train_b16_s42.txt": {
+          "count": 1232,
+          "sha256": "a2c3f276f5ca12645cc0302d560ae2e052b07b03fe0506586a95e34747c16028"
+        },
+        "banking77_train_b8_s87.txt": {
+          "count": 616,
+          "sha256": "28d15c108d54b751fd2a0e68873ac21c75570bfc777f72d612a9cf83ce1e4934"
+        },
+        "banking77_train_b16_s87.txt": {
+          "count": 1232,
+          "sha256": "ed4756f39df623608b00892fc3aabd37ba7203d441679e2d1903f414169e16f5"
+        },
+        "banking77_jev_ids.txt": {
+          "count": 3850,
+          "sha256": "27dabf6fe28db37ec8e4f6a2941f592d4134885768f8df5e65ce763ac8565f2a"
+        }
+      }
+    },
+    "clinc150": {
+      "classes": 150,
+      "available_budgets": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "minimum_training_pool_per_class": 99,
+      "omitted_budgets": [],
+      "official_train": 15000,
+      "clean_train": 14998,
+      "removed_train_duplicates_conflicts_or_test_overlap": 2,
+      "calibration": 1500,
+      "dev": 750,
+      "test": 5500,
+      "test_duplicate_text_rows": 0,
+      "class_order": [
+        "accept_reservations",
+        "account_blocked",
+        "alarm",
+        "application_status",
+        "apr",
+        "are_you_a_bot",
+        "balance",
+        "bill_balance",
+        "bill_due",
+        "book_flight",
+        "book_hotel",
+        "calculator",
+        "calendar",
+        "calendar_update",
+        "calories",
+        "cancel",
+        "cancel_reservation",
+        "car_rental",
+        "card_declined",
+        "carry_on",
+        "change_accent",
+        "change_ai_name",
+        "change_language",
+        "change_speed",
+        "change_user_name",
+        "change_volume",
+        "confirm_reservation",
+        "cook_time",
+        "credit_limit",
+        "credit_limit_change",
+        "credit_score",
+        "current_location",
+        "damaged_card",
+        "date",
+        "definition",
+        "direct_deposit",
+        "directions",
+        "distance",
+        "do_you_have_pets",
+        "exchange_rate",
+        "expiration_date",
+        "find_phone",
+        "flight_status",
+        "flip_coin",
+        "food_last",
+        "freeze_account",
+        "fun_fact",
+        "gas",
+        "gas_type",
+        "goodbye",
+        "greeting",
+        "how_busy",
+        "how_old_are_you",
+        "improve_credit_score",
+        "income",
+        "ingredient_substitution",
+        "ingredients_list",
+        "insurance",
+        "insurance_change",
+        "interest_rate",
+        "international_fees",
+        "international_visa",
+        "jump_start",
+        "last_maintenance",
+        "lost_luggage",
+        "make_call",
+        "maybe",
+        "meal_suggestion",
+        "meaning_of_life",
+        "measurement_conversion",
+        "meeting_schedule",
+        "min_payment",
+        "mpg",
+        "new_card",
+        "next_holiday",
+        "next_song",
+        "no",
+        "nutrition_info",
+        "oil_change_how",
+        "oil_change_when",
+        "order",
+        "order_checks",
+        "order_status",
+        "pay_bill",
+        "payday",
+        "pin_change",
+        "play_music",
+        "plug_type",
+        "pto_balance",
+        "pto_request",
+        "pto_request_status",
+        "pto_used",
+        "recipe",
+        "redeem_rewards",
+        "reminder",
+        "reminder_update",
+        "repeat",
+        "replacement_card_duration",
+        "report_fraud",
+        "report_lost_card",
+        "reset_settings",
+        "restaurant_reservation",
+        "restaurant_reviews",
+        "restaurant_suggestion",
+        "rewards_balance",
+        "roll_dice",
+        "rollover_401k",
+        "routing",
+        "schedule_maintenance",
+        "schedule_meeting",
+        "share_location",
+        "shopping_list",
+        "shopping_list_update",
+        "smart_home",
+        "spelling",
+        "spending_history",
+        "sync_device",
+        "taxes",
+        "tell_joke",
+        "text",
+        "thank_you",
+        "time",
+        "timer",
+        "timezone",
+        "tire_change",
+        "tire_pressure",
+        "todo_list",
+        "todo_list_update",
+        "traffic",
+        "transactions",
+        "transfer",
+        "translate",
+        "travel_alert",
+        "travel_notification",
+        "travel_suggestion",
+        "uber",
+        "update_playlist",
+        "user_name",
+        "vaccines",
+        "w2",
+        "weather",
+        "what_are_your_hobbies",
+        "what_can_i_ask_you",
+        "what_is_your_name",
+        "what_song",
+        "where_are_you_from",
+        "whisper_mode",
+        "who_do_you_work_for",
+        "who_made_you",
+        "yes"
+      ],
+      "files": {
+        "clinc150_calibration_ids.txt": {
+          "count": 1500,
+          "sha256": "e58cbcf98e7eeb3c384c863d8117f800d7c9792c4d05b05d2c4848946994712b"
+        },
+        "clinc150_dev_ids.txt": {
+          "count": 750,
+          "sha256": "7edfbe4341a037a51f92cd33123e73b8820449ec5f9224ca379ee06d7917854e"
+        },
+        "clinc150_test_ids.txt": {
+          "count": 5500,
+          "sha256": "db465658badb24a62130455a62cea89d207be0f57984edbc73d98fe27e6465e0"
+        },
+        "clinc150_train_b8_s13.txt": {
+          "count": 1200,
+          "sha256": "68437f6d9624076569ccc77661d6d4c9def2ad1ccf22f2fa88dbe8cde987d995"
+        },
+        "clinc150_train_b16_s13.txt": {
+          "count": 2400,
+          "sha256": "f935ae7206c829ec9cdc382bf1b8c9c45869c67a45629f941d2b94e51c9ef969"
+        },
+        "clinc150_train_b32_s13.txt": {
+          "count": 4800,
+          "sha256": "56e44283bccbd5db4c6c50727da811963914cd7827c58bda74a683e237f9a053"
+        },
+        "clinc150_train_b64_s13.txt": {
+          "count": 9600,
+          "sha256": "128b10f8cd10d4076e71bff887d3038ecc92cd2c5ff69b320d3c16c721f9bae6"
+        },
+        "clinc150_train_b8_s42.txt": {
+          "count": 1200,
+          "sha256": "c2f6a7f5b8b3e2e96c746f6b46a337b33c35d486334ab16487ad828f4a862d92"
+        },
+        "clinc150_train_b16_s42.txt": {
+          "count": 2400,
+          "sha256": "d7ab413e08ea994e4f0761a9ec79ff391441407ef2aaffc3c0f0acd520cc167e"
+        },
+        "clinc150_train_b32_s42.txt": {
+          "count": 4800,
+          "sha256": "1bd1fb920ece41b04640dd2d3134098035c9df347fd1814157d5f06fa4208b73"
+        },
+        "clinc150_train_b64_s42.txt": {
+          "count": 9600,
+          "sha256": "489191a0020edb8cda9fa444f2155de3f72c44f0fee66ef195cf5ab75f829c54"
+        },
+        "clinc150_train_b8_s87.txt": {
+          "count": 1200,
+          "sha256": "2a00b10b1fcb6a200c3021206280fa5d1c7aff209f639d67f729a72dc083c78e"
+        },
+        "clinc150_train_b16_s87.txt": {
+          "count": 2400,
+          "sha256": "bc3d0b518ab7ef180f9d0cc96f3e8170b77a93104e8f1947105a2bbe524bfd79"
+        },
+        "clinc150_train_b32_s87.txt": {
+          "count": 4800,
+          "sha256": "571fe65151e15b0503acc231de6d6fc1053a2f2748af112757665289ce423a98"
+        },
+        "clinc150_train_b64_s87.txt": {
+          "count": 9600,
+          "sha256": "1756c66172a7c37fd5c6151910edc1485892265cbcbcdde7701d65096e2c8c9d"
+        },
+        "clinc150_jev_ids.txt": {
+          "count": 7000,
+          "sha256": "aa5c1736c4e94efb2d886f57cf9b2e9803467cfa7aaa9ef1b3d7076d0df66638"
+        }
+      }
+    }
+  }
+}

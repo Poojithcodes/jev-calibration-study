@@ -1,0 +1,23 @@
+{
+  "dataset": "ag_news",
+  "instructions": "What is the main topic of the news article in `text`?",
+  "labels": [
+    {
+      "name": "World",
+      "description": "International news, politics, conflicts and world affairs"
+    },
+    {
+      "name": "Sports",
+      "description": "Sports events, teams, athletes and results"
+    },
+    {
+      "name": "Business",
+      "description": "Companies, markets, economy and finance"
+    },
+    {
+      "name": "Sci/Tech",
+      "description": "Science, technology, computing, internet and space"
+    }
+  ],
+  "status": "DRAFT - check wording on dev examples only; freeze on Day 5"
+}

@@ -1,0 +1,17 @@
+{
+  "python": "3.12.13 (main, Jun 23 2026, 15:23:43) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "C:\\Users\\pooji\\Documents\\Codex\\2026-10-17\\new-chat\\jev-study\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "torch": null,
+    "datasets": "4.8.5",
+    "transformers": "4.57.6",
+    "setfit": "1.2.0",
+    "sentence-transformers": "5.7.0",
+    "accelerate": "1.15.0"
+  },
+  "jev_key_present": false,
+  "nvidia_smi": "NVIDIA GeForce RTX 3050 6GB Laptop GPU, 6144 MiB, 581.86",
+  "cuda_test_passed": false,
+  "torch_error": "No module named 'torch'"
+}

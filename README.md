@@ -1,2 +1,91 @@
-# jev-calibration-study
-Comparing Jev’s zero-shot predictions with few-shot SetFit and ModernBERT models across label budgets, confidence calibration, and selective prediction.
+# Jev calibration study
+
+How many labels does a fine-tuned encoder need to match Jev on calibration and selective prediction?
+Proposal and team split: the "Jev Calibration Study — Revised Research Proposal" doc.
+
+## Current status — 23 October 2026
+
+Shared manifests and split audits are prepared. GPU setup and the SetFit AG News
+budget-8, seed-13 development pilot are complete: 32 training examples, 100 development
+examples, 80% development accuracy, macro-F1 0.7965. Calibration and official test
+evaluation remain pending. See [local setup and pilot details](docs/LOCAL_START.md)
+and [saved results](reports/pilots/setfit/ag_news__b8__s13/result.json).
+
+## Setup (once)
+
+```bash
+pip install -r requirements.txt
+copy .env.example .env      # Windows (macOS/Linux: cp); then paste your OpenRouter key into .env
+python -m pytest -q         # 16 tests should pass
+```
+
+The loader downloads missing datasets automatically into `data/raw/`. For the shared
+manifests in this repository, restore the original ZIP's raw snapshots and verify against
+the tracked `data/raw/SOURCES.json` first: upstream URLs are mutable, and fresh downloads
+may not reproduce the recorded bytes. Raw snapshots and trained weights remain local.
+
+## Jev (Mohak)
+
+```bash
+python scripts/smoke_test.py                                                   # one call: key, credits, snapshot
+python scripts/run_jev.py --config configs/labels/ag_news.json --splits train --limit 50   # pilot
+```
+
+Label configs in `configs/labels/`: `ag_news`, `banking77`, `banking77_bare` (wording ablation),
+`clinc150` (150 in-scope labels; OOS scored as 1 − max probability), `clinc150_oos_option`
+(adds an explicit "none of these" option for RQ3). All are drafts until Day 5: adjust wording on
+dev examples only, then freeze.
+
+Final runs take Poojith's manifests, e.g.
+
+```bash
+python scripts/run_jev.py --config configs/labels/clinc150.json --splits val,test,oos_test \
+    --ids-file manifests/clinc150_jev_ids.txt --allow-test
+```
+
+where the IDs file is the calibration IDs plus the test IDs. Every response is cached in
+`cache/jev_cache.sqlite`, so reruns are free and the raw responses are archived.
+
+## AG-Fresh-2026 (both)
+
+```bash
+python scripts/collect_headlines.py --since 2026-10-22     # once a day until ~700 candidates
+python scripts/make_annotation_sheets.py --n 600           # blind sheet per annotator
+#   label data/fresh/sheet_poojith.csv and sheet_mohak.csv independently (docs/annotation_guide.md)
+python scripts/agreement.py                                # kappa + adjudication.csv
+python scripts/agreement.py --finalise                     # data/fresh/ag_fresh_2026.csv
+python scripts/run_jev.py --config configs/labels/ag_news.json --dataset ag_fresh --splits test --allow-test
+```
+
+## Encoders (Poojith)
+
+See `docs/encoder_handoff.md` for manifests, the prediction file format and the rules.
+
+## Scoring
+
+```bash
+python scripts/score.py --preds "preds/**/*.jsonl" --rounded
+```
+
+Writes `results/per_run.csv`, `summary.csv` (mean ± SD over seeds), `paired.csv`
+(encoder − Jev with paired bootstrap CIs) and `routing.csv` (Jev answers above a threshold
+chosen on calibration data, encoder answers the rest).
+
+## Conventions the code enforces
+
+- Test splits are refused without `--allow-test`.
+- Confidence = maximum class probability, never Jev's `confidence` field.
+- NLL floors probabilities at 1e-3 (Jev returns many exact zeros); ECE uses 15 equal-width bins,
+  plus equal-mass bins that keep tied confidences together.
+- Temperature scaling: one T per run, fitted on calibration IDs (encoder logits; Jev log-probabilities).
+- Comparisons fail loudly if two systems disagree on a gold label or class order for the same ID.
+
+## Layout
+
+```
+src/jevcal/   jev_client · data · contract · metrics · scoring · fresh
+scripts/      smoke_test · run_jev · collect_headlines · make_annotation_sheets · agreement · score
+configs/labels/   label wording per dataset
+docs/         annotation_guide · encoder_handoff · run_ledger.csv
+tests/        pytest suite
+```

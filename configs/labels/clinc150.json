@@ -1,0 +1,608 @@
+{
+  "dataset": "clinc150",
+  "instructions": "Which intent does the user's request to a virtual assistant in `text` express?",
+  "labels": [
+    {
+      "name": "accept_reservations",
+      "description": "Whether a restaurant takes reservations"
+    },
+    {
+      "name": "account_blocked",
+      "description": "Bank account is blocked or locked"
+    },
+    {
+      "name": "alarm",
+      "description": "Set an alarm"
+    },
+    {
+      "name": "application_status",
+      "description": "Status of a credit card or loan application"
+    },
+    {
+      "name": "apr",
+      "description": "APR or interest rate on a card"
+    },
+    {
+      "name": "are_you_a_bot",
+      "description": "Asking whether the assistant is a bot"
+    },
+    {
+      "name": "balance",
+      "description": "Bank account balance"
+    },
+    {
+      "name": "bill_balance",
+      "description": "Amount owed on a bill"
+    },
+    {
+      "name": "bill_due",
+      "description": "When a bill is due"
+    },
+    {
+      "name": "book_flight",
+      "description": "Book a flight"
+    },
+    {
+      "name": "book_hotel",
+      "description": "Book a hotel"
+    },
+    {
+      "name": "calculator",
+      "description": "Do arithmetic"
+    },
+    {
+      "name": "calendar",
+      "description": "What is on the calendar"
+    },
+    {
+      "name": "calendar_update",
+      "description": "Add or change a calendar event"
+    },
+    {
+      "name": "calories",
+      "description": "Calories in a food"
+    },
+    {
+      "name": "cancel",
+      "description": "Cancel the current request"
+    },
+    {
+      "name": "cancel_reservation",
+      "description": "Cancel a restaurant reservation"
+    },
+    {
+      "name": "car_rental",
+      "description": "Rent a car"
+    },
+    {
+      "name": "card_declined",
+      "description": "Why a card was declined"
+    },
+    {
+      "name": "carry_on",
+      "description": "Carry-on luggage rules for a flight"
+    },
+    {
+      "name": "change_accent",
+      "description": "Change the assistant's accent"
+    },
+    {
+      "name": "change_ai_name",
+      "description": "Change the assistant's name"
+    },
+    {
+      "name": "change_language",
+      "description": "Change the assistant's language"
+    },
+    {
+      "name": "change_speed",
+      "description": "Change how fast the assistant speaks"
+    },
+    {
+      "name": "change_user_name",
+      "description": "Change what the assistant calls the user"
+    },
+    {
+      "name": "change_volume",
+      "description": "Change the assistant's volume"
+    },
+    {
+      "name": "confirm_reservation",
+      "description": "Confirm a restaurant reservation"
+    },
+    {
+      "name": "cook_time",
+      "description": "How long to cook something"
+    },
+    {
+      "name": "credit_limit",
+      "description": "Current credit card limit"
+    },
+    {
+      "name": "credit_limit_change",
+      "description": "Raise or change the credit limit"
+    },
+    {
+      "name": "credit_score",
+      "description": "User's credit score"
+    },
+    {
+      "name": "current_location",
+      "description": "Where the user is now"
+    },
+    {
+      "name": "damaged_card",
+      "description": "Card is damaged"
+    },
+    {
+      "name": "date",
+      "description": "Today's date"
+    },
+    {
+      "name": "definition",
+      "description": "Meaning of a word"
+    },
+    {
+      "name": "direct_deposit",
+      "description": "Set up direct deposit"
+    },
+    {
+      "name": "directions",
+      "description": "Directions to a place"
+    },
+    {
+      "name": "distance",
+      "description": "Distance between places"
+    },
+    {
+      "name": "do_you_have_pets",
+      "description": "Asking whether the assistant has pets"
+    },
+    {
+      "name": "exchange_rate",
+      "description": "Currency exchange rate"
+    },
+    {
+      "name": "expiration_date",
+      "description": "Card expiration date"
+    },
+    {
+      "name": "find_phone",
+      "description": "Locate the user's phone"
+    },
+    {
+      "name": "flight_status",
+      "description": "Status of a flight"
+    },
+    {
+      "name": "flip_coin",
+      "description": "Flip a coin"
+    },
+    {
+      "name": "food_last",
+      "description": "How long food stays fresh"
+    },
+    {
+      "name": "freeze_account",
+      "description": "Freeze a bank account"
+    },
+    {
+      "name": "fun_fact",
+      "description": "Tell a fun fact"
+    },
+    {
+      "name": "gas",
+      "description": "Fuel level of the car"
+    },
+    {
+      "name": "gas_type",
+      "description": "What fuel the car needs"
+    },
+    {
+      "name": "goodbye",
+      "description": "Saying goodbye"
+    },
+    {
+      "name": "greeting",
+      "description": "Saying hello"
+    },
+    {
+      "name": "how_busy",
+      "description": "How busy a place is"
+    },
+    {
+      "name": "how_old_are_you",
+      "description": "Asking the assistant's age"
+    },
+    {
+      "name": "improve_credit_score",
+      "description": "How to improve a credit score"
+    },
+    {
+      "name": "income",
+      "description": "User's income"
+    },
+    {
+      "name": "ingredient_substitution",
+      "description": "Substitute for a cooking ingredient"
+    },
+    {
+      "name": "ingredients_list",
+      "description": "Ingredients for a dish"
+    },
+    {
+      "name": "insurance",
+      "description": "Details of the user's insurance"
+    },
+    {
+      "name": "insurance_change",
+      "description": "Change insurance plan"
+    },
+    {
+      "name": "interest_rate",
+      "description": "Interest rate on an account"
+    },
+    {
+      "name": "international_fees",
+      "description": "Fees for using a card abroad"
+    },
+    {
+      "name": "international_visa",
+      "description": "Visa needed to travel to a country"
+    },
+    {
+      "name": "jump_start",
+      "description": "How to jump-start a car"
+    },
+    {
+      "name": "last_maintenance",
+      "description": "When the car was last serviced"
+    },
+    {
+      "name": "lost_luggage",
+      "description": "Report or find lost luggage"
+    },
+    {
+      "name": "make_call",
+      "description": "Make a phone call"
+    },
+    {
+      "name": "maybe",
+      "description": "Answering maybe"
+    },
+    {
+      "name": "meal_suggestion",
+      "description": "Suggest a meal"
+    },
+    {
+      "name": "meaning_of_life",
+      "description": "Meaning of life"
+    },
+    {
+      "name": "measurement_conversion",
+      "description": "Convert units of measurement"
+    },
+    {
+      "name": "meeting_schedule",
+      "description": "Meetings scheduled"
+    },
+    {
+      "name": "min_payment",
+      "description": "Minimum payment due"
+    },
+    {
+      "name": "mpg",
+      "description": "Car fuel economy"
+    },
+    {
+      "name": "new_card",
+      "description": "Get a new card"
+    },
+    {
+      "name": "next_holiday",
+      "description": "When the next holiday is"
+    },
+    {
+      "name": "next_song",
+      "description": "Skip to the next song"
+    },
+    {
+      "name": "no",
+      "description": "Answering no"
+    },
+    {
+      "name": "nutrition_info",
+      "description": "Nutrition facts for a food"
+    },
+    {
+      "name": "oil_change_how",
+      "description": "How to change car oil"
+    },
+    {
+      "name": "oil_change_when",
+      "description": "When the car needs an oil change"
+    },
+    {
+      "name": "order",
+      "description": "Place an order for a product"
+    },
+    {
+      "name": "order_checks",
+      "description": "Order new checks"
+    },
+    {
+      "name": "order_status",
+      "description": "Status of an order"
+    },
+    {
+      "name": "pay_bill",
+      "description": "Pay a bill"
+    },
+    {
+      "name": "payday",
+      "description": "When the next payday is"
+    },
+    {
+      "name": "pin_change",
+      "description": "Change a card PIN"
+    },
+    {
+      "name": "play_music",
+      "description": "Play music"
+    },
+    {
+      "name": "plug_type",
+      "description": "Plug type used in a country"
+    },
+    {
+      "name": "pto_balance",
+      "description": "Paid time off remaining"
+    },
+    {
+      "name": "pto_request",
+      "description": "Request paid time off"
+    },
+    {
+      "name": "pto_request_status",
+      "description": "Status of a time-off request"
+    },
+    {
+      "name": "pto_used",
+      "description": "Paid time off already used"
+    },
+    {
+      "name": "recipe",
+      "description": "Recipe for a dish"
+    },
+    {
+      "name": "redeem_rewards",
+      "description": "Redeem card rewards"
+    },
+    {
+      "name": "reminder",
+      "description": "What reminders are set"
+    },
+    {
+      "name": "reminder_update",
+      "description": "Set or change a reminder"
+    },
+    {
+      "name": "repeat",
+      "description": "Repeat the last response"
+    },
+    {
+      "name": "replacement_card_duration",
+      "description": "How long a replacement card takes"
+    },
+    {
+      "name": "report_fraud",
+      "description": "Report fraudulent activity"
+    },
+    {
+      "name": "report_lost_card",
+      "description": "Report a lost card"
+    },
+    {
+      "name": "reset_settings",
+      "description": "Reset the assistant to factory settings"
+    },
+    {
+      "name": "restaurant_reservation",
+      "description": "Book a restaurant table"
+    },
+    {
+      "name": "restaurant_reviews",
+      "description": "Reviews of a restaurant"
+    },
+    {
+      "name": "restaurant_suggestion",
+      "description": "Suggest a restaurant"
+    },
+    {
+      "name": "rewards_balance",
+      "description": "Card rewards points balance"
+    },
+    {
+      "name": "roll_dice",
+      "description": "Roll dice"
+    },
+    {
+      "name": "rollover_401k",
+      "description": "Roll over a 401k retirement account"
+    },
+    {
+      "name": "routing",
+      "description": "Bank routing number"
+    },
+    {
+      "name": "schedule_maintenance",
+      "description": "Book car maintenance"
+    },
+    {
+      "name": "schedule_meeting",
+      "description": "Schedule a meeting"
+    },
+    {
+      "name": "share_location",
+      "description": "Share location with someone"
+    },
+    {
+      "name": "shopping_list",
+      "description": "What is on the shopping list"
+    },
+    {
+      "name": "shopping_list_update",
+      "description": "Add to or change the shopping list"
+    },
+    {
+      "name": "smart_home",
+      "description": "Control smart home devices"
+    },
+    {
+      "name": "spelling",
+      "description": "How to spell a word"
+    },
+    {
+      "name": "spending_history",
+      "description": "Past spending"
+    },
+    {
+      "name": "sync_device",
+      "description": "Sync or pair a device"
+    },
+    {
+      "name": "taxes",
+      "description": "Taxes owed or tax questions"
+    },
+    {
+      "name": "tell_joke",
+      "description": "Tell a joke"
+    },
+    {
+      "name": "text",
+      "description": "Send a text message"
+    },
+    {
+      "name": "thank_you",
+      "description": "Saying thank you"
+    },
+    {
+      "name": "time",
+      "description": "Current time"
+    },
+    {
+      "name": "timer",
+      "description": "Set a timer"
+    },
+    {
+      "name": "timezone",
+      "description": "Time zone of a place"
+    },
+    {
+      "name": "tire_change",
+      "description": "When or how to change tyres"
+    },
+    {
+      "name": "tire_pressure",
+      "description": "Tyre pressure"
+    },
+    {
+      "name": "todo_list",
+      "description": "What is on the to-do list"
+    },
+    {
+      "name": "todo_list_update",
+      "description": "Add to or change the to-do list"
+    },
+    {
+      "name": "traffic",
+      "description": "Traffic conditions"
+    },
+    {
+      "name": "transactions",
+      "description": "Recent account transactions"
+    },
+    {
+      "name": "transfer",
+      "description": "Transfer money between accounts"
+    },
+    {
+      "name": "translate",
+      "description": "Translate a phrase"
+    },
+    {
+      "name": "travel_alert",
+      "description": "Travel warnings for a destination"
+    },
+    {
+      "name": "travel_notification",
+      "description": "Tell the bank about upcoming travel"
+    },
+    {
+      "name": "travel_suggestion",
+      "description": "Suggest places to visit"
+    },
+    {
+      "name": "uber",
+      "description": "Book an Uber"
+    },
+    {
+      "name": "update_playlist",
+      "description": "Add songs to a playlist"
+    },
+    {
+      "name": "user_name",
+      "description": "What the assistant calls the user"
+    },
+    {
+      "name": "vaccines",
+      "description": "Vaccines needed for travel"
+    },
+    {
+      "name": "w2",
+      "description": "W-2 tax form"
+    },
+    {
+      "name": "weather",
+      "description": "Weather forecast"
+    },
+    {
+      "name": "what_are_your_hobbies",
+      "description": "Asking the assistant's hobbies"
+    },
+    {
+      "name": "what_can_i_ask_you",
+      "description": "What the assistant can do"
+    },
+    {
+      "name": "what_is_your_name",
+      "description": "Asking the assistant's name"
+    },
+    {
+      "name": "what_song",
+      "description": "Identify the song playing"
+    },
+    {
+      "name": "where_are_you_from",
+      "description": "Asking where the assistant is from"
+    },
+    {
+      "name": "whisper_mode",
+      "description": "Switch to whisper mode"
+    },
+    {
+      "name": "who_do_you_work_for",
+      "description": "Who the assistant works for"
+    },
+    {
+      "name": "who_made_you",
+      "description": "Who created the assistant"
+    },
+    {
+      "name": "yes",
+      "description": "Answering yes"
+    }
+  ],
+  "status": "DRAFT - check wording on dev examples only; freeze on Day 5",
+  "oos_label": "oos"
+}
