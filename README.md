@@ -3,7 +3,15 @@
 How many labels does a fine-tuned encoder need to match Jev on calibration and selective prediction?
 Proposal and team split: the "Jev Calibration Study — Revised Research Proposal" doc.
 
-## Current status — 23 October 2026
+## Current status — 24 October 2026
+
+Update, 24 October: the MPNet SetFit and native-bf16 ModernBERT AG News b8/s13
+development pilots are complete. MPNet: 83% accuracy, macro-F1 0.8278; ModernBERT
+bf16: 73% accuracy, macro-F1 0.7217. Both checkpoints reload correctly, all shared
+hashes remain unchanged, and official-test evaluation remains deferred. See
+[24 October pilot details](docs/LOCAL_START.md#24-october-mpnet-and-bf16-pilots).
+
+The following records the earlier baseline pilots:
 
 Shared manifests and split audits are prepared. GPU setup and the SetFit AG News
 budget-8, seed-13 development pilot are complete: 32 training examples, 100 development

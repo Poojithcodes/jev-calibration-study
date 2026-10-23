@@ -1,0 +1,8 @@
+{
+  "status": "failed_before_training",
+  "reason": "MPNetModel in transformers 4.57.6 does not support gradient checkpointing.",
+  "training_started": false,
+  "development_evaluated": false,
+  "official_test_evaluated": false,
+  "resolution": "Use microbatch 2 and gradient accumulation 8 (effective batch 16), no checkpointing. Record the memory adaptation separately in mpnet-retry2."
+}

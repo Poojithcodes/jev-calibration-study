@@ -1,0 +1,8 @@
+{
+  "status": "failed_before_training",
+  "reason": "SetFit 1.2.0 did not forward the pinned revision to its SentenceTransformer loader; offline lookup of the unpinned backbone failed.",
+  "training_started": false,
+  "development_evaluated": false,
+  "official_test_evaluated": false,
+  "resolution": "Load the exact local snapshot directory. Retry with identical training settings in ag_news__b8__s13__mpnet-retry1."
+}

@@ -53,3 +53,15 @@ annotation sheets on 26 Oct; both annotators label independently on 26–27 Oct.
 Bare-label ablation, round 0 on Banking77 dev: 77.4% acc, ECE 0.102 (descriptions +0.8 pts accuracy).
 CLINC150 dev round 0: 94.7% acc, ECE 0.017 — no wording change; strong in-domain calibration is itself a contamination question for RQ2.
 Remaining errors on both datasets are mostly gold-label ambiguity (e.g. AG News "World" labels on Ryder Cup and F1 stories); no further wording rounds, to avoid tuning to dev noise.
+
+## Encoder implementation progress — 24 Oct
+
+- Item 1 pilot complete: SetFit with paraphrase-mpnet-base-v2, AG News b8/s13,
+  83% development accuracy and macro-F1 0.8278. Effective batch 16 uses microbatch 2
+  and accumulation 8; two pre-training compatibility failures are preserved in the ledger.
+- Item 3 pilot complete: native bf16 ModernBERT, same training IDs and 10-epoch
+  schedule, 73% development accuracy and macro-F1 0.7217. No GradScaler; all 20
+  optimizer updates completed. The earlier fp16 pilots are retained.
+- Both checkpoints reload successfully; predictions and shared hashes validate.
+  Items 2, 4 and 5 (training length, GPU forecast and general runner) remain pending.
+  No settings freeze or final test evaluation was performed.

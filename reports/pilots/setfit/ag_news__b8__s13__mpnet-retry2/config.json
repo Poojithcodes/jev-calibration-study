@@ -1,0 +1,26 @@
+{
+  "model_id": "sentence-transformers/paraphrase-mpnet-base-v2",
+  "revision": "6cc9279c672dc57f94445ef259b28a1b736fec8f",
+  "budget": 8,
+  "seed": 13,
+  "embedding_epochs": 1,
+  "batch_size": 2,
+  "gradient_accumulation_steps": 8,
+  "effective_batch_size": 16,
+  "num_iterations": 20,
+  "body_learning_rate": 2e-05,
+  "max_length": 256,
+  "warmup_proportion": 0.1,
+  "loss": "CosineSimilarityLoss",
+  "head": "LogisticRegression",
+  "head_params": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 13
+  },
+  "normalize_embeddings": false,
+  "use_amp": false,
+  "gradient_checkpointing": false,
+  "evaluation": "development only; no early stopping or hyperparameter search",
+  "status": "pilot settings; not a frozen full-grid protocol"
+}

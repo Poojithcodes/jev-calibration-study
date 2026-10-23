@@ -40,6 +40,11 @@ def main():
     if a.run_tag and not all(c.isalnum() or c in '-_' for c in a.run_tag):
         p.error('--run-tag must contain only letters, digits, hyphens, or underscores')
     cfg = json.loads(a.config.read_text())
+    if cfg['precision'] not in ['fp16', 'bf16']:
+        raise ValueError('Supported training precisions: fp16, bf16')
+    if cfg['precision'] == 'bf16' and not torch.cuda.is_bf16_supported(including_emulation=False):
+        raise RuntimeError('Native CUDA bf16 is not supported on this GPU')
+    amp_dtype = torch.bfloat16 if cfg['precision'] == 'bf16' else torch.float16
     cfg.update(dataset=a.dataset, budget=a.budget, seed=a.seed)
     suffix = f'__{a.run_tag}' if a.run_tag else ''
     out = root / f'reports/pilots/modernbert/{a.dataset}__b{a.budget}__s{a.seed}{suffix}'
@@ -54,7 +59,8 @@ def main():
     torch.backends.cudnn.deterministic = True
     save('environment.json', dict(python=sys.version, executable=sys.executable,
          packages={k: importlib.metadata.version(k) for k in ['torch', 'transformers', 'numpy', 'scikit-learn']},
-         cuda_runtime=torch.version.cuda, gpu=torch.cuda.get_device_name(0)))
+         cuda_runtime=torch.version.cuda, gpu=torch.cuda.get_device_name(0),
+         native_bf16_supported=torch.cuda.is_bf16_supported(including_emulation=False)))
     tokenizer = AutoTokenizer.from_pretrained(cfg['model_id'], revision=cfg['revision'], local_files_only=True)
     model = AutoModelForSequenceClassification.from_pretrained(
         cfg['model_id'], revision=cfg['revision'], local_files_only=True,
@@ -76,7 +82,8 @@ def main():
     effective_batch = cfg['micro_batch_size'] * cfg['gradient_accumulation_steps']
     total_steps = math.ceil(len(train) / effective_batch) * cfg['epochs']
     scheduler = get_linear_schedule_with_warmup(optimizer, math.ceil(total_steps * cfg['warmup_ratio']), total_steps)
-    scaler = torch.amp.GradScaler('cuda', init_scale=cfg.get('initial_loss_scale', 65536.0))
+    scaler = (torch.amp.GradScaler('cuda', init_scale=cfg.get('initial_loss_scale', 65536.0))
+              if cfg['precision'] == 'fp16' else None)
     history = []
     torch.cuda.reset_peak_memory_stats()
     start = time.perf_counter()
@@ -93,21 +100,27 @@ def main():
             for j in range(0, len(group), cfg['micro_batch_size']):
                 indices = group[j:j + cfg['micro_batch_size']]
                 inputs, labels = batch(indices)
-                with torch.autocast('cuda', dtype=torch.float16):
+                with torch.autocast('cuda', dtype=amp_dtype):
                     loss = model(**inputs, labels=labels).loss
                 if not torch.isfinite(loss):
                     raise RuntimeError('Non-finite training loss')
                 total_loss += float(loss.detach()) * len(indices)
-                scaler.scale(loss * (len(indices) / len(group))).backward()
-            scaler.unscale_(optimizer)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg['max_grad_norm'])
-            old_scale = scaler.get_scale()
-            scaler.step(optimizer)
-            scaler.update()
-            if scaler.get_scale() < old_scale:
-                skipped += 1
-            else:
+                weighted_loss = loss * (len(indices) / len(group))
+                (scaler.scale(weighted_loss) if scaler is not None else weighted_loss).backward()
+            if scaler is not None:
+                scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), cfg['max_grad_norm'], error_if_nonfinite=scaler is None)
+            if scaler is None:
+                optimizer.step()
                 scheduler.step()
+            else:
+                old_scale = scaler.get_scale()
+                scaler.step(optimizer)
+                scaler.update()
+                if scaler.get_scale() < old_scale:
+                    skipped += 1
+                else:
+                    scheduler.step()
         item = dict(epoch=epoch+1, training_loss=total_loss/len(train), learning_rate=scheduler.get_last_lr()[0])
         history.append(item)
         print(json.dumps(item), flush=True)
@@ -160,6 +173,7 @@ def main():
                   development_macro_f1=f1_score(gold,pred,labels=order,average='macro',zero_division=0),
                   confusion_matrix=confusion_matrix(gold,pred,labels=order).tolist(), class_order=order,
                   train_seconds=seconds, peak_cuda_allocated_bytes=peak, skipped_optimizer_steps=skipped,
+                  optimizer_steps_completed=total_steps-skipped, grad_scaler_used=scaler is not None,
                   checkpoint_reload_passed=True, validate_problems=problems, shared_hashes_unchanged=True,
                   official_test_evaluated=False, calibration_evaluated=False)
     save('result.json', result)

@@ -146,3 +146,53 @@ python scripts/run_modernbert_pilot.py --config configs/modernbert_numerical_che
 The precision review is complete. Full-grid launch is still pending agreement on the
 Banking77 8/16 budgets and freezing the recorded model settings. No final predictions
 or final calibration/test metrics have been generated.
+
+## 24 October: MPNet and bf16 pilots
+
+Completed the first two steps from the new handoff, both on AG News budget 8, seed 13,
+using the original 32 training and 100 development IDs. Older artifacts are preserved.
+
+| Run | Dev accuracy | Dev macro-F1 | Training seconds | Peak allocated CUDA |
+| --- | --- | --- | --- | --- |
+| SetFit paraphrase-mpnet-base-v2 | 0.83 | 0.8277972028 | 167.5114 | 2,629,020,672 bytes |
+| ModernBERT-base bf16 | 0.73 | 0.7217431297 | 78.1630 | 3,111,878,144 bytes |
+
+MPNet revision: `6cc9279c672dc57f94445ef259b28a1b736fec8f`. One contrastive epoch,
+20 pair iterations, 1,280 pairs and 80 optimizer steps. Learning rate 2e-5, sequence
+length 256, FP32, logistic-regression head. Microbatch 2 with accumulation 8 keeps
+effective batch size 16 within the 6 GB GPU. Gradient checkpointing is off because
+the installed MPNet implementation does not support it.
+
+Two attempts failed before any training or development evaluation: SetFit 1.2 failed
+to forward the pinned revision to SentenceTransformer, then MPNet rejected gradient
+checkpointing. Both failure records and ledger entries are retained. The successful
+runner loads the exact local snapshot directory; no development scores were used
+to choose these implementation fixes.
+
+ModernBERT uses `configs/modernbert_bf16_pilot.json`: the same 10 epochs and effective
+batch size 16 as before, now with native bf16 autocast and no GradScaler. Native bf16
+support and a bf16 matrix forward/backward pass were verified on the RTX 3050. All
+20 optimizer updates completed; zero were skipped. Training-length selection is
+still pending and this pilot does not freeze that decision.
+
+Successful artifact directories:
+
+- `reports/pilots/setfit/ag_news__b8__s13__mpnet-retry2/`
+- `reports/pilots/modernbert/ag_news__b8__s13__bf16/`
+
+Both prediction files contain 100 development rows, finite logits, softmax probabilities,
+and the exact shared class order. Saved checkpoints reload with matching sample logits.
+All 44 shared artifact hashes are unchanged. Calibration and official test data were
+not evaluated. All 21 repository tests pass. These remain single-seed development results.
+
+After downloading the pinned snapshots, the reproduction commands are:
+
+```powershell
+python scripts/run_setfit_pilot.py --root . --model-id sentence-transformers/paraphrase-mpnet-base-v2 --revision 6cc9279c672dc57f94445ef259b28a1b736fec8f --run-tag mpnet-retry2 --micro-batch-size 2 --gradient-accumulation-steps 8
+python scripts/run_modernbert_pilot.py --config configs/modernbert_bf16_pilot.json --run-tag bf16
+```
+
+These commands refuse to overwrite the existing run directories. Use new run tags
+for an intentional reproduction. The next work is CLINC150 b64 timing and the
+development-based training-length decision, followed by the general runner and freeze.
+Banking77 budgets 8/16 are already agreed in `docs/protocol_decisions.md`.
