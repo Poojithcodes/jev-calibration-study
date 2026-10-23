@@ -19,5 +19,5 @@
       "description": "Science, space and the technology industry: computing, internet, software, gadgets, video games and tech companies, including their business news"
     }
   ],
-  "status": "DRAFT - check wording on dev examples only; freeze on Day 5"
+  "status": "FROZEN 24 Oct 2026 after wording round 1 (see docs/protocol_decisions.md)"
 }
