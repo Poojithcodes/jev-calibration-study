@@ -196,3 +196,17 @@ These commands refuse to overwrite the existing run directories. Use new run tag
 for an intentional reproduction. The next work is CLINC150 b64 timing and the
 development-based training-length decision, followed by the general runner and freeze.
 Banking77 budgets 8/16 are already agreed in `docs/protocol_decisions.md`.
+
+## 24 October: CLINC150 throughput benchmark
+
+The CLINC150 b64/s13 training-only benchmark completed 320 updates, with 300
+measured after 20 timing warmup updates. Mean throughput was 3.4807 seconds/update;
+peak allocated GPU memory was 2.90 GiB, and no updates were skipped. All 44 shared
+hashes remain unchanged. No development, calibration or test evaluation occurred.
+
+The current ModernBERT grid projects to 36.97 training hours. The combined 60-run
+estimate is 125.65 hours before a planning buffer, but uses unmeasured SetFit
+cross-dataset proxies. See the [full timing report and limitations](../reports/benchmarks/modernbert/clinc150__b64__s13__timing300/SUMMARY.md).
+Training-length selection, SetFit timing refinement and the general runner remain.
+All 22 tests pass. On this sandbox, pytest's default temporary directory could not
+be created; rerunning with a fresh workspace `--basetemp` passed the entire suite.

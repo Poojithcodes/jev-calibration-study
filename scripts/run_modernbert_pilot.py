@@ -23,7 +23,13 @@ def main():
     p.add_argument('--seed', type=int, default=13)
     p.add_argument('--config', type=Path, default=ROOT / 'configs/modernbert_pilot.json')
     p.add_argument('--run-tag', default='', help='Separate artifact directory for a numerical-validation repeat')
+    p.add_argument('--benchmark-steps', type=int, default=0, help='Measure this many updates, then exit without predictions or checkpoint')
+    p.add_argument('--benchmark-warmup', type=int, default=20, help='Initial updates excluded from timing statistics')
     a = p.parse_args()
+    if a.benchmark_steps < 0 or a.benchmark_warmup < 0:
+        p.error('Benchmark counts must be non-negative')
+    if a.benchmark_steps and (a.dataset != 'clinc150' or a.budget != 64):
+        p.error('This timing benchmark is reserved for CLINC150 budget 64')
     root = a.root.resolve()
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
     os.environ['HF_HUB_DISABLE_TELEMETRY'] = '1'
@@ -47,7 +53,8 @@ def main():
     amp_dtype = torch.bfloat16 if cfg['precision'] == 'bf16' else torch.float16
     cfg.update(dataset=a.dataset, budget=a.budget, seed=a.seed)
     suffix = f'__{a.run_tag}' if a.run_tag else ''
-    out = root / f'reports/pilots/modernbert/{a.dataset}__b{a.budget}__s{a.seed}{suffix}'
+    category = 'benchmarks' if a.benchmark_steps else 'pilots'
+    out = root / f'reports/{category}/modernbert/{a.dataset}__b{a.budget}__s{a.seed}{suffix}'
     out.mkdir(parents=True, exist_ok=False)
     save = lambda name, value: (out / name).write_text(json.dumps(value, indent=2), encoding='utf-8')
     save('config.json', cfg)
@@ -81,6 +88,8 @@ def main():
                                   {'params':no_decay, 'weight_decay':0.0}], lr=cfg['learning_rate'])
     effective_batch = cfg['micro_batch_size'] * cfg['gradient_accumulation_steps']
     total_steps = math.ceil(len(train) / effective_batch) * cfg['epochs']
+    if a.benchmark_steps and a.benchmark_steps + a.benchmark_warmup > total_steps:
+        raise ValueError('Benchmark must fit within the configured training schedule')
     scheduler = get_linear_schedule_with_warmup(optimizer, math.ceil(total_steps * cfg['warmup_ratio']), total_steps)
     scaler = (torch.amp.GradScaler('cuda', init_scale=cfg.get('initial_loss_scale', 65536.0))
               if cfg['precision'] == 'fp16' else None)
@@ -90,11 +99,20 @@ def main():
     print(f'Training {len(train)} examples for {cfg["epochs"]} epochs / {total_steps} optimizer steps', flush=True)
     rng = np.random.default_rng(a.seed)
     skipped = 0
+    timings = []
+    if a.benchmark_steps:
+        save('benchmark_plan.json', dict(measured_updates=a.benchmark_steps, warmup_updates=a.benchmark_warmup,
+                                        full_training_updates=total_steps, evaluation=False, save_checkpoint=False))
+        save('token_lengths.json', dict(count=len(train), max=int(max(map(len,train_tokens['input_ids']))),
+                                       percentiles=np.percentile([len(x) for x in train_tokens['input_ids']], [50,90,95,99]).tolist()))
     for epoch in range(cfg['epochs']):
         model.train()
         shuffled = rng.permutation(len(train)).tolist()
         total_loss = 0.0
         for offset in range(0, len(train), effective_batch):
+            if a.benchmark_steps:
+                torch.cuda.synchronize()
+                update_start = time.perf_counter()
             group = shuffled[offset:offset + effective_batch]
             optimizer.zero_grad(set_to_none=True)
             for j in range(0, len(group), cfg['micro_batch_size']):
@@ -121,6 +139,49 @@ def main():
                     skipped += 1
                 else:
                     scheduler.step()
+            if a.benchmark_steps:
+                torch.cuda.synchronize()
+                timings.append(time.perf_counter()-update_start)
+                if len(timings) % 10 == 0:
+                    save('progress.json', dict(completed_updates=len(timings), target_updates=a.benchmark_steps+a.benchmark_warmup,
+                                              elapsed_seconds=time.perf_counter()-start, latest_update_seconds=timings[-1]))
+                    print(f'Benchmark update {len(timings)}/{a.benchmark_steps+a.benchmark_warmup}: {timings[-1]:.3f} seconds', flush=True)
+                if len(timings) == a.benchmark_steps+a.benchmark_warmup:
+                    measured = np.asarray(timings[a.benchmark_warmup:])
+                    after = shared_hashes(root)
+                    if before != after:
+                        raise RuntimeError('Shared artifacts changed during benchmark')
+                    save('shared_hashes_after.json', after)
+                    result = dict(status='completed_training_only_benchmark', training_pool_examples=len(train),
+                                  completed_updates=len(timings), measured_updates=len(measured), warmup_updates=a.benchmark_warmup,
+                                  training_examples_processed=len(timings)*effective_batch,
+                                  mean_update_seconds=float(measured.mean()), median_update_seconds=float(np.median(measured)),
+                                  p90_update_seconds=float(np.percentile(measured,90)),
+                                  first_half_mean_seconds=float(measured[:len(measured)//2].mean()),
+                                  second_half_mean_seconds=float(measured[len(measured)//2:].mean()),
+                                  elapsed_training_seconds=time.perf_counter()-start,
+                                  peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated(),
+                                  peak_cuda_reserved_bytes=torch.cuda.max_memory_reserved(),
+                                  skipped_optimizer_steps=skipped, grad_scaler_used=scaler is not None,
+                                  shared_hashes_unchanged=True, development_evaluated=False,
+                                  calibration_evaluated=False, official_test_evaluated=False,
+                                  checkpoint_saved=False, update_seconds=timings)
+                    save('result.json', result)
+                    from jevcal.training_forecast import forecast
+                    grid = json.loads((root/'reports/encoder_grid_plan.json').read_text())['runs']
+                    ag = json.loads((root/'reports/pilots/modernbert/ag_news__b8__s13__bf16/result.json').read_text())
+                    sf = json.loads((root/'reports/pilots/setfit/ag_news__b8__s13__mpnet-retry2/result.json').read_text())
+                    projection = forecast(grid,float(measured.mean()),ag['train_seconds']/ag['optimizer_steps_completed'],
+                                          sf['train_seconds']/sf['optimizer_steps_completed'])
+                    save('forecast.json',projection)
+                    with (root/'docs/run_ledger.csv').open('a', newline='', encoding='utf-8') as f:
+                        csv.writer(f).writerow([datetime.now(timezone(timedelta(hours=5, minutes=30))).date(),
+                                              'Poojith',a.dataset,'modernbert','',a.budget,a.seed,'','',0,
+                                              result['elapsed_training_seconds'],0,True,
+                                              f'Training-only timing benchmark; {len(timings)} updates; no checkpoint or predictions. {out.relative_to(root).as_posix()}'])
+                    print(json.dumps({k:v for k,v in result.items() if k!='update_seconds'},indent=2),flush=True)
+                    print(json.dumps(projection['hours_by_model']),flush=True)
+                    return
         item = dict(epoch=epoch+1, training_loss=total_loss/len(train), learning_rate=scheduler.get_last_lr()[0])
         history.append(item)
         print(json.dumps(item), flush=True)

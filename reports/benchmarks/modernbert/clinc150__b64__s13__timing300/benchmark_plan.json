@@ -1,0 +1,7 @@
+{
+  "measured_updates": 300,
+  "warmup_updates": 20,
+  "full_training_updates": 6000,
+  "evaluation": false,
+  "save_checkpoint": false
+}

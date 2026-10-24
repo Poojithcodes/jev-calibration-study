@@ -63,5 +63,11 @@ Remaining errors on both datasets are mostly gold-label ambiguity (e.g. AG News 
   schedule, 73% development accuracy and macro-F1 0.7217. No GradScaler; all 20
   optimizer updates completed. The earlier fp16 pilots are retained.
 - Both checkpoints reload successfully; predictions and shared hashes validate.
-  Items 2, 4 and 5 (training length, GPU forecast and general runner) remain pending.
+  Items 2 and 5 (training length and general runner) remain pending.
   No settings freeze or final test evaluation was performed.
+- Item 4 benchmark complete: CLINC150 b64/s13, 20 timing warmup updates plus
+  300 measured updates, mean 3.4807 seconds/update. ModernBERT's current grid
+  projects to 36.97 training hours. The combined 125.65-hour estimate uses
+  unmeasured SetFit cross-dataset proxies and needs refinement before scheduling.
+  See [benchmark report](../reports/benchmarks/modernbert/clinc150__b64__s13__timing300/SUMMARY.md).
+  Cloud execution has not been selected or launched.

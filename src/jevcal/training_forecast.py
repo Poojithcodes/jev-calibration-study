@@ -1,0 +1,33 @@
+"""Training-time estimates from measured updates and the existing run grid."""
+import math
+
+
+def forecast(runs, clinc_seconds, ag_seconds, setfit_seconds):
+    estimates = []
+    for run in runs:
+        n = run['training_examples']
+        if run['model'] == 'modernbert':
+            steps = math.ceil(n / 16) * 10
+            seconds = ag_seconds if run['dataset'] == 'ag_news' else clinc_seconds
+            basis = 'AG News bf16 pilot' if run['dataset'] == 'ag_news' else (
+                'CLINC150 b64 benchmark' if run['dataset'] == 'clinc150' else 'CLINC proxy; Banking77 not timed')
+        else:
+            steps = math.ceil(n * 40 / 16)
+            seconds = setfit_seconds
+            basis = 'MPNet AG News proxy; other datasets not timed'
+        estimates.append(dict(**run, estimated_optimizer_steps=steps,
+                              seconds_per_update_assumption=seconds, timing_basis=basis,
+                              estimated_training_hours=steps * seconds / 3600))
+    totals = {model: sum(r['estimated_training_hours'] for r in estimates if r['model']==model)
+              for model in ['setfit','modernbert']}
+    hours = sum(totals.values())
+    return dict(status='provisional_training_only_forecast', runs=estimates,
+                hours_by_model=totals, total_training_hours=hours,
+                hours_with_20_percent_planning_buffer=hours*1.2,
+                days_at_daily_gpu_hours={str(h):hours*1.2/h for h in [8,16,24]},
+                assumptions=['ModernBERT 10 epochs, effective batch 16; minimum-update rule not chosen',
+                             'SetFit 1 epoch, 20 pair iterations, effective batch 16',
+                             'All 60 final runs remain; pilots are not deducted',
+                             '20 percent buffer is a planning assumption, not a confidence interval',
+                             'Model loading, prediction, calibration, checkpoint I/O and reruns excluded',
+                             'SetFit non-AG and ModernBERT Banking77 speeds are unmeasured proxies'])

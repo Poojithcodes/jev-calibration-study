@@ -1,0 +1,10 @@
+{
+  "notes": "Point-in-time observations during the benchmark, not averages or proof of throttling.",
+  "windows_battery_status_raw": 2,
+  "battery_charge_percent": 100,
+  "gpu_samples": [
+    {"temperature_c": 51, "power_w": 6.82, "utilization_percent": 10, "memory_used_mib": 3573, "sm_clock_mhz": 277},
+    {"local_time": "2026-10-24 12:36:01", "timezone": "Asia/Calcutta", "temperature_c": 53, "power_w": 13.67, "utilization_percent": 6, "sm_clock_mhz": 1515}
+  ],
+  "interpretation": "GPU utilization and clocks varied. Forecasts describe this runner under observed laptop conditions; do not assume identical throughput on another device."
+}
