@@ -29,6 +29,14 @@ class JevError(RuntimeError):
     pass
 
 
+class JevStopError(JevError):
+    """Account-level refusal (no credit, bad key, forbidden). Retrying cannot help, so a
+    batch stops at once; everything already answered stays cached and a rerun resumes."""
+
+
+STOP_STATUS = {401, 402, 403}
+
+
 @dataclass
 class JevAnswer:
     predicted_label: str
@@ -124,6 +132,8 @@ class JevClient:
                 if r.status_code == 200:
                     return r.json(), latency
                 last = f"HTTP {r.status_code}: {r.text[:300]}"
+                if r.status_code in STOP_STATUS:
+                    raise JevStopError(last)
                 if r.status_code not in RETRY_STATUS:
                     raise JevError(last)
             if attempt < self.max_retries:
@@ -132,10 +142,14 @@ class JevClient:
 
     # ---- public ------------------------------------------------------------------
     def classify(self, text: str, criteria: dict[str, str | None], instructions: str,
-                 question: str = "label") -> JevAnswer:
-        """criteria: ordered {label: description or None}. Its key order is the class order."""
+                 question: str = "label", repeat_tag: str | None = None) -> JevAnswer:
+        """criteria: ordered {label: description or None}. Its key order is the class order.
+        repeat_tag: send the identical request again under a separate cache entry
+        (variability checks); the API sees exactly the same payload."""
         payload = build_choice_payload(text, criteria, instructions, self.model, question)
         key = request_hash(payload)
+        if repeat_tag:
+            key = hashlib.sha256(f"{key}|repeat={repeat_tag}".encode()).hexdigest()
         hit = self._get(key)
         if hit:
             raw, latency = hit
@@ -149,11 +163,26 @@ class JevClient:
         return ans
 
     def classify_many(self, texts: list[str], criteria: dict[str, str | None], instructions: str,
-                      concurrency: int = 8, question: str = "label") -> list[JevAnswer | JevError]:
-        """Order-preserving. Failed items come back as JevError so one bad call never kills a run."""
+                      concurrency: int = 8, question: str = "label",
+                      repeat_tag: str | None = None) -> list[JevAnswer | JevError]:
+        """Order-preserving. Failed items come back as JevError so one bad call never kills a run.
+        After an account-level refusal (JevStopError) every remaining uncached item is skipped
+        instead of hammering the API; cached items are still returned."""
+        stop = threading.Event()
+
         def one(t):
+            if stop.is_set():
+                payload = build_choice_payload(t, criteria, instructions, self.model, question)
+                key = request_hash(payload)
+                if repeat_tag:
+                    key = hashlib.sha256(f"{key}|repeat={repeat_tag}".encode()).hexdigest()
+                if not self._get(key):
+                    return JevStopError("skipped: run stopped after an account-level refusal")
             try:
-                return self.classify(t, criteria, instructions, question)
+                return self.classify(t, criteria, instructions, question, repeat_tag)
+            except JevStopError as e:
+                stop.set()
+                return e
             except JevError as e:
                 return e
         with ThreadPoolExecutor(max_workers=concurrency) as pool:

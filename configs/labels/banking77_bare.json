@@ -311,6 +311,6 @@
       "description": null
     }
   ],
-  "status": "DRAFT - check wording on dev examples only; freeze on Day 5",
+  "status": "FROZEN 24 Oct 2026 after wording round 1 (see docs/protocol_decisions.md)",
   "ablation": "bare label names, no descriptions"
 }

@@ -52,3 +52,29 @@ def test_validate_catches_problems():
     bad = {**good, "class_probabilities": [0.3, 0.6]}
     assert validate([bad, good], order)  # unnormalised + duplicate id
     assert validate([good], order, {"d:test:1", "d:test:2"})  # missing id
+
+
+def test_stop_error_skips_rest_but_keeps_cached(tmp_path, monkeypatch):
+    client = jc.JevClient(api_key="test", cache_path=tmp_path / "c.sqlite")
+    monkeypatch.setattr(client, "_post", lambda payload: (FAKE, 1.0))
+    client.classify("cached one", CRITERIA, "topic?")
+    calls = []
+
+    def refuse(payload):
+        calls.append(1)
+        raise jc.JevStopError('HTTP 402: {"error":"Insufficient credits"}')
+    monkeypatch.setattr(client, "_post", refuse)
+    out = client.classify_many(["cached one"] + [f"new {i}" for i in range(20)], CRITERIA, "topic?", concurrency=1)
+    assert isinstance(out[0], jc.JevAnswer) and out[0].from_cache
+    assert all(isinstance(o, jc.JevStopError) for o in out[1:])
+    assert len(calls) == 1  # stopped after the first refusal
+
+
+def test_repeat_tag_uses_separate_cache_entry(tmp_path, monkeypatch):
+    calls = []
+    client = jc.JevClient(api_key="test", cache_path=tmp_path / "c.sqlite")
+    monkeypatch.setattr(client, "_post", lambda payload: (calls.append(payload) or FAKE, 1.0))
+    client.classify("t", CRITERIA, "q")
+    client.classify("t", CRITERIA, "q", repeat_tag="r1")
+    client.classify("t", CRITERIA, "q", repeat_tag="r1")
+    assert len(calls) == 2 and calls[0] == calls[1]  # identical payload, one extra real call

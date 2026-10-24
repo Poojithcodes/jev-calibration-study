@@ -71,3 +71,24 @@ Remaining errors on both datasets are mostly gold-label ambiguity (e.g. AG News 
   unmeasured SetFit cross-dataset proxies and needs refinement before scheduling.
   See [benchmark report](../reports/benchmarks/modernbert/clinc150__b64__s13__timing300/SUMMARY.md).
   Cloud execution has not been selected or launched.
+
+## Jev side frozen (24 Oct)
+
+All five label configs are frozen. Jev's final runs depend only on these configs and the frozen
+manifests, not on encoder settings, so they run now, in this order (most important first, in case
+the account is stopped partway):
+
+1. CLINC150 (calibration + test + out-of-scope test)
+2. AG News (calibration + test)
+3. Banking77 (calibration + test)
+4. CLINC150 with the explicit "none of these" option (RQ3)
+5. Banking77 with bare label names (wording ablation)
+
+AG-Fresh-2026 runs once its labels are adjudicated. Then a repeatability check on 100 dev items
+per dataset, 4 calls each (`scripts/variability.py`).
+
+If OpenRouter refuses the account (HTTP 401/402/403), `run_jev.py` stops at once, keeps every
+finished answer in the cache, and exits with code 3; rerunning the same command resumes for free.
+
+Figures: after `scripts/score.py`, run `python scripts/make_figures.py --preds "preds/**/*.jsonl"`
+for budget curves (Jev as reference lines), reliability diagrams and risk–coverage curves per dataset.

@@ -21,7 +21,7 @@ from dotenv import load_dotenv  # noqa: E402
 
 from jevcal import data, metrics  # noqa: E402
 from jevcal.contract import normalise, validate, write_jsonl  # noqa: E402
-from jevcal.jev_client import DEFAULT_MODEL, JevClient, JevError  # noqa: E402
+from jevcal.jev_client import DEFAULT_MODEL, JevClient, JevError, JevStopError  # noqa: E402
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--config", required=True)
@@ -34,6 +34,7 @@ ap.add_argument("--concurrency", type=int, default=8)
 ap.add_argument("--out", default=None)
 ap.add_argument("--allow-test", action="store_true")
 ap.add_argument("--dataset", default=None, help="override the config's dataset, e.g. ag_fresh with ag_news.json")
+ap.add_argument("--repeat-tag", default=None, help="resend identical requests under a separate cache entry (variability checks)")
 args = ap.parse_args()
 
 splits = [s.strip() for s in args.splits.split(",") if s.strip()]
@@ -65,7 +66,7 @@ if bad:
 
 client = JevClient(model=args.model)
 answers = client.classify_many([r["text"] for r in rows], criteria, cfg["instructions"],
-                               concurrency=args.concurrency)
+                               concurrency=args.concurrency, repeat_tag=args.repeat_tag)
 
 records, failures = [], []
 for r, a in zip(rows, answers):
@@ -82,10 +83,10 @@ for r, a in zip(rows, answers):
         "raw_probabilities": a.probabilities, "raw_prob_sum": raw_sum, "jev_confidence": a.confidence,
         "model_snapshot": a.model_snapshot, "request_hash": a.request_hash, "request_id": a.request_id,
         "latency_ms": a.latency_ms, "from_cache": a.from_cache, "usage": a.usage,
-        "label_config_status": cfg.get("status"),
+        "label_config_status": cfg.get("status"), "repeat_tag": args.repeat_tag,
     })
 
-tag = "+".join(splits)
+tag = "+".join(splits) + (f"__rep-{args.repeat_tag}" if args.repeat_tag else "")
 out = Path(args.out or f"preds/jev/{dataset}__{cfg_path.stem}__{tag}__n{len(rows)}.jsonl")
 write_jsonl(records, out)
 if failures:
@@ -110,3 +111,11 @@ if any(x["is_oos"] for x in records) and ins:
     is_oos = [x["is_oos"] for x in records]
     print(f"OOS AUROC (1 - max prob): {metrics.oos_auroc(P_all, is_oos):.4f}   "
           f"FPR@95TPR: {metrics.fpr_at_95_tpr(P_all, is_oos):.4f}")
+
+stopped = [f for f, a in zip(rows, answers) if isinstance(a, JevStopError)]
+if stopped:
+    first = next(str(a) for a in answers if isinstance(a, JevStopError) and not str(a).startswith("skipped"))
+    print(f"\nSTOPPED: OpenRouter refused the account ({first[:160]}).")
+    print(f"{len(records)} answers are saved and cached; {len(stopped)} were not run.")
+    print("Add credit, then rerun this exact command: cached answers are reused for free.")
+    sys.exit(3)

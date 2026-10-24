@@ -607,7 +607,7 @@
       "description": "None of these: the request matches none of the other intents"
     }
   ],
-  "status": "DRAFT - check wording on dev examples only; freeze on Day 5",
+  "status": "FROZEN 24 Oct 2026 after wording round 1 (see docs/protocol_decisions.md)",
   "oos_label": "oos",
   "variant": "explicit none-of-these option (RQ3)"
 }

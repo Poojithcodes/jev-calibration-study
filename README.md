@@ -38,7 +38,7 @@ Jev run commands): [docs/protocol_decisions.md](docs/protocol_decisions.md).
 ```bash
 pip install -r requirements.txt
 copy .env.example .env      # Windows (macOS/Linux: cp); then paste your OpenRouter key into .env
-python -m pytest -q         # 22 tests should pass
+python -m pytest -q         # 24 tests should pass
 ```
 
 The loader downloads missing datasets automatically into `data/raw/`. For the shared

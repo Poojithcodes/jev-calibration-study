@@ -210,3 +210,8 @@ cross-dataset proxies. See the [full timing report and limitations](../reports/b
 Training-length selection, SetFit timing refinement and the general runner remain.
 All 22 tests pass. On this sandbox, pytest's default temporary directory could not
 be created; rerunning with a fresh workspace `--basetemp` passed the entire suite.
+
+Integrated teammate commit `985a59c` before publishing the benchmark, preserving
+the Jev label freeze, refusal handling, variability check and figure script.
+The combined suite passes all 24 tests outside the sandbox; a sandbox rerun had
+failed during collection with a Windows subprocess handle error.
