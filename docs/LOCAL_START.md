@@ -215,3 +215,19 @@ Integrated teammate commit `985a59c` before publishing the benchmark, preserving
 the Jev label freeze, refusal handling, variability check and figure script.
 The combined suite passes all 24 tests outside the sandbox; a sandbox rerun had
 failed during collection with a Windows subprocess handle error.
+
+## 25 October: training-length selection completed
+
+Completed the predeclared AG News b8 comparison: minimum 20/50/100 updates, each
+with seeds 13/42/87, using development data only. The selected rule is ten epochs
+or at least 100 updates, rounded to whole epochs. Mean dev accuracy improved from
+73% to 77%, with macro-F1 0.7242 to 0.7651. This is selection evidence on 100 dev
+items, not a final test comparison. The selected config is
+`configs/modernbert_selected.json`; original configs and all nine runs are retained.
+
+All 900 prediction rows validate, all checkpoints reload, all 44 shared hashes are
+unchanged, and no optimizer updates were skipped. All 27 tests pass. No Jev key was
+used and no calibration/test evaluation was performed. The full report and revised
+37.51-hour ModernBERT forecast are in
+[the selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md).
+Next: general encoder runner and SetFit throughput refinement before full-grid launch.

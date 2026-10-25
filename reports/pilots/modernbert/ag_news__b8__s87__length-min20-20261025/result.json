@@ -1,0 +1,49 @@
+{
+  "status": "completed_development_only",
+  "train_examples": 32,
+  "dev_examples": 100,
+  "development_accuracy": 0.73,
+  "development_macro_f1": 0.7202997986427027,
+  "confusion_matrix": [
+    [
+      20,
+      3,
+      1,
+      1
+    ],
+    [
+      0,
+      25,
+      0,
+      0
+    ],
+    [
+      3,
+      2,
+      14,
+      6
+    ],
+    [
+      5,
+      0,
+      6,
+      14
+    ]
+  ],
+  "class_order": [
+    "World",
+    "Sports",
+    "Business",
+    "Sci/Tech"
+  ],
+  "train_seconds": 49.513071099994704,
+  "peak_cuda_allocated_bytes": 3111882240,
+  "skipped_optimizer_steps": 0,
+  "optimizer_steps_completed": 20,
+  "grad_scaler_used": false,
+  "checkpoint_reload_passed": true,
+  "validate_problems": [],
+  "shared_hashes_unchanged": true,
+  "official_test_evaluated": false,
+  "calibration_evaluated": false
+}

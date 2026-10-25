@@ -1,0 +1,115 @@
+{
+  "plan": {
+    "dataset": "ag_news",
+    "budget": 8,
+    "seeds": [
+      13,
+      42,
+      87
+    ],
+    "min_updates": [
+      20,
+      50,
+      100
+    ],
+    "base_epochs": 10,
+    "selection": "Shortest candidate within 0.01 of best mean development macro-F1 across three seeds",
+    "tolerance": 0.01,
+    "calibration_evaluated": false,
+    "official_test_evaluated": false,
+    "note": "Fresh initialization per candidate/seed; identical other settings; whole-epoch rounding"
+  },
+  "runs": [
+    {
+      "min_updates": 20,
+      "seed": 13,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s13__length-min20-20261025/result.json",
+      "accuracy": 0.73,
+      "macro_f1": 0.7217431297027611,
+      "train_seconds": 48.50089019999723
+    },
+    {
+      "min_updates": 20,
+      "seed": 42,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s42__length-min20-20261025/result.json",
+      "accuracy": 0.73,
+      "macro_f1": 0.730568719136935,
+      "train_seconds": 74.73861979998765
+    },
+    {
+      "min_updates": 20,
+      "seed": 87,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s87__length-min20-20261025/result.json",
+      "accuracy": 0.73,
+      "macro_f1": 0.7202997986427027,
+      "train_seconds": 49.513071099994704
+    },
+    {
+      "min_updates": 50,
+      "seed": 13,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s13__length-min50-20261025/result.json",
+      "accuracy": 0.74,
+      "macro_f1": 0.7254607028191934,
+      "train_seconds": 131.62461739999708
+    },
+    {
+      "min_updates": 50,
+      "seed": 42,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s42__length-min50-20261025/result.json",
+      "accuracy": 0.73,
+      "macro_f1": 0.716674486986987,
+      "train_seconds": 166.21750460000476
+    },
+    {
+      "min_updates": 50,
+      "seed": 87,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s87__length-min50-20261025/result.json",
+      "accuracy": 0.79,
+      "macro_f1": 0.7866778247592201,
+      "train_seconds": 453.8857588999963
+    },
+    {
+      "min_updates": 100,
+      "seed": 13,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s13__length-min100-20261025/result.json",
+      "accuracy": 0.75,
+      "macro_f1": 0.7442636608674345,
+      "train_seconds": 237.6218023999827
+    },
+    {
+      "min_updates": 100,
+      "seed": 42,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s42__length-min100-20261025/result.json",
+      "accuracy": 0.76,
+      "macro_f1": 0.753191856452726,
+      "train_seconds": 185.2522943999793
+    },
+    {
+      "min_updates": 100,
+      "seed": 87,
+      "result_path": "reports/pilots/modernbert/ag_news__b8__s87__length-min100-20261025/result.json",
+      "accuracy": 0.8,
+      "macro_f1": 0.7978782726341963,
+      "train_seconds": 215.07062929999665
+    }
+  ],
+  "aggregates": [
+    {
+      "min_updates": 20,
+      "mean_macro_f1": 0.7242038824941329,
+      "mean_accuracy": 0.73
+    },
+    {
+      "min_updates": 50,
+      "mean_macro_f1": 0.7429376715218001,
+      "mean_accuracy": 0.7533333333333333
+    },
+    {
+      "min_updates": 100,
+      "mean_macro_f1": 0.765111263318119,
+      "mean_accuracy": 0.77
+    }
+  ],
+  "selected_min_updates": 100,
+  "limitation": "Selection on one small development set; not a final generalization estimate"
+}

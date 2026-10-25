@@ -1,0 +1,23 @@
+{
+  "model_id": "answerdotai/ModernBERT-base",
+  "revision": "8949b909ec900327062f0ebf497f51aef5e6f0c8",
+  "epochs": 10,
+  "micro_batch_size": 2,
+  "gradient_accumulation_steps": 8,
+  "learning_rate": 2e-05,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.1,
+  "max_length": 256,
+  "max_grad_norm": 1.0,
+  "precision": "bf16",
+  "gradient_checkpointing": true,
+  "attention": "sdpa",
+  "reference_compile": false,
+  "status": "Development-only training-length comparison",
+  "min_updates": 50,
+  "dataset": "ag_news",
+  "budget": 8,
+  "seed": 13,
+  "resolved_epochs": 25,
+  "resolved_optimizer_steps": 50
+}

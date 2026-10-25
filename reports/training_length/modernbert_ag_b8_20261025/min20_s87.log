@@ -1,0 +1,64 @@
+W1025 11:38:46.020000 33640 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+Some weights of ModernBertForSequenceClassification were not initialized from the model checkpoint at answerdotai/ModernBERT-base and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Training 32 examples for 10 epochs / 20 optimizer steps
+You're using a PreTrainedTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+{"epoch": 1, "training_loss": 1.4361572265625, "learning_rate": 2e-05}
+{"epoch": 2, "training_loss": 1.285888671875, "learning_rate": 1.7777777777777777e-05}
+{"epoch": 3, "training_loss": 0.96759033203125, "learning_rate": 1.555555555555556e-05}
+{"epoch": 4, "training_loss": 0.78179931640625, "learning_rate": 1.3333333333333333e-05}
+{"epoch": 5, "training_loss": 0.58984375, "learning_rate": 1.1111111111111113e-05}
+{"epoch": 6, "training_loss": 0.4268798828125, "learning_rate": 8.888888888888888e-06}
+{"epoch": 7, "training_loss": 0.295379638671875, "learning_rate": 6.666666666666667e-06}
+{"epoch": 8, "training_loss": 0.21178436279296875, "learning_rate": 4.444444444444444e-06}
+{"epoch": 9, "training_loss": 0.152923583984375, "learning_rate": 2.222222222222222e-06}
+{"epoch": 10, "training_loss": 0.12351036071777344, "learning_rate": 0.0}
+{
+  "status": "completed_development_only",
+  "train_examples": 32,
+  "dev_examples": 100,
+  "development_accuracy": 0.73,
+  "development_macro_f1": 0.7202997986427027,
+  "confusion_matrix": [
+    [
+      20,
+      3,
+      1,
+      1
+    ],
+    [
+      0,
+      25,
+      0,
+      0
+    ],
+    [
+      3,
+      2,
+      14,
+      6
+    ],
+    [
+      5,
+      0,
+      6,
+      14
+    ]
+  ],
+  "class_order": [
+    "World",
+    "Sports",
+    "Business",
+    "Sci/Tech"
+  ],
+  "train_seconds": 49.513071099994704,
+  "peak_cuda_allocated_bytes": 3111882240,
+  "skipped_optimizer_steps": 0,
+  "optimizer_steps_completed": 20,
+  "grad_scaler_used": false,
+  "checkpoint_reload_passed": true,
+  "validate_problems": [],
+  "shared_hashes_unchanged": true,
+  "official_test_evaluated": false,
+  "calibration_evaluated": false
+}

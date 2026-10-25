@@ -87,7 +87,10 @@ def main():
     optimizer = torch.optim.AdamW([{'params':decay, 'weight_decay':cfg['weight_decay']},
                                   {'params':no_decay, 'weight_decay':0.0}], lr=cfg['learning_rate'])
     effective_batch = cfg['micro_batch_size'] * cfg['gradient_accumulation_steps']
-    total_steps = math.ceil(len(train) / effective_batch) * cfg['epochs']
+    from jevcal.training_schedule import training_schedule
+    resolved_epochs, total_steps = training_schedule(len(train), effective_batch, cfg['epochs'], cfg.get('min_updates', 0))
+    cfg.update(resolved_epochs=resolved_epochs, resolved_optimizer_steps=total_steps)
+    save('config.json', cfg)
     if a.benchmark_steps and a.benchmark_steps + a.benchmark_warmup > total_steps:
         raise ValueError('Benchmark must fit within the configured training schedule')
     scheduler = get_linear_schedule_with_warmup(optimizer, math.ceil(total_steps * cfg['warmup_ratio']), total_steps)
@@ -96,7 +99,7 @@ def main():
     history = []
     torch.cuda.reset_peak_memory_stats()
     start = time.perf_counter()
-    print(f'Training {len(train)} examples for {cfg["epochs"]} epochs / {total_steps} optimizer steps', flush=True)
+    print(f'Training {len(train)} examples for {resolved_epochs} epochs / {total_steps} optimizer steps', flush=True)
     rng = np.random.default_rng(a.seed)
     skipped = 0
     timings = []
@@ -105,7 +108,7 @@ def main():
                                         full_training_updates=total_steps, evaluation=False, save_checkpoint=False))
         save('token_lengths.json', dict(count=len(train), max=int(max(map(len,train_tokens['input_ids']))),
                                        percentiles=np.percentile([len(x) for x in train_tokens['input_ids']], [50,90,95,99]).tolist()))
-    for epoch in range(cfg['epochs']):
+    for epoch in range(resolved_epochs):
         model.train()
         shuffled = rng.permutation(len(train)).tolist()
         total_loss = 0.0

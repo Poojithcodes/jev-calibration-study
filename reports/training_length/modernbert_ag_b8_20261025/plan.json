@@ -1,0 +1,20 @@
+{
+  "dataset": "ag_news",
+  "budget": 8,
+  "seeds": [
+    13,
+    42,
+    87
+  ],
+  "min_updates": [
+    20,
+    50,
+    100
+  ],
+  "base_epochs": 10,
+  "selection": "Shortest candidate within 0.01 of best mean development macro-F1 across three seeds",
+  "tolerance": 0.01,
+  "calibration_evaluated": false,
+  "official_test_evaluated": false,
+  "note": "Fresh initialization per candidate/seed; identical other settings; whole-epoch rounding"
+}
