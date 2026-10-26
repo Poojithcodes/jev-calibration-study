@@ -11,3 +11,4 @@ data/raw/*
 results/
 reports/pilots/**/checkpoint/
 reports/pilots/**/training/
+reports/benchmarks/**/training/

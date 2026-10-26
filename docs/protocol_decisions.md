@@ -80,7 +80,7 @@ updates, whichever is longer**, rounded to whole epochs. Mean dev accuracy was
 73.0%, 75.3% and 77.0%; mean macro-F1 was 0.7242, 0.7429 and 0.7651 respectively.
 Use `configs/modernbert_selected.json` for subsequent runs. This does not freeze all
 encoder settings or authorize test-driven adjustments. SetFit timing refinement
-remains pending. See the [selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md)
+was completed on 26 Oct below. See the [selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md)
 for the fixed selection criterion, per-seed results, limitations and revised forecast.
 
 ## General encoder runner — 25 Oct
@@ -94,6 +94,8 @@ All 60 development preflight checks pass. No frozen encoder record or final test
 predictions were created. See [runner instructions](ENCODER_RUNNER.md).
 
 ## Jev side frozen (24 Oct)
+
+See the encoder compute update at the end of this document for its separate launch constraints.
 
 All five label configs are frozen. Jev's final runs depend only on these configs and the frozen
 manifests, not on encoder settings, so they run now, in this order (most important first, in case
@@ -113,3 +115,17 @@ finished answer in the cache, and exits with code 3; rerunning the same command 
 
 Figures: after `scripts/score.py`, run `python scripts/make_figures.py --preds "preds/**/*.jsonl"`
 for budget curves (Jev as reference lines), reliability diagrams and risk–coverage curves per dataset.
+
+## Encoder compute update — 26 Oct
+
+SetFit b8 training-only timings: CLINC150 mean 2.0176 seconds/update (200 measured),
+Banking77 2.1402 (100 measured), each after 20 timing warmup updates. The fixed
+iteration sampler now bounds candidate storage without changing emitted pairs;
+actual CLINC b64 pair preparation completed successfully. No evaluation data were scored.
+
+At the user's stated 8 GPU hours/day, the 123.50-hour grid estimate plus 20% buffer
+needs 18.53 compute days. The recorded Oct 28–31 window supplies only 32 local hours.
+Each SetFit CLINC b64 run projects to 13.45 hours and cannot fit an 8-hour slot with
+the current non-resumable training backend. Resolve resume support/later timing or
+a separately measured GPU allocation before the encoder freeze. No deadline or
+study scope was silently changed. See the [compute plan](../reports/benchmarks/setfit/SUMMARY.md).

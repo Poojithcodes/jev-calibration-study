@@ -1,0 +1,38 @@
+[
+  {
+    "examples": 32,
+    "classes": 4,
+    "iterations": 20,
+    "emitted_pairs": 1280,
+    "identical": true,
+    "full_candidates": 528,
+    "bounded_candidates": 528
+  },
+  {
+    "examples": 40,
+    "classes": 2,
+    "iterations": 2,
+    "emitted_pairs": 160,
+    "identical": true,
+    "full_candidates": 820,
+    "bounded_candidates": 160
+  },
+  {
+    "examples": 80,
+    "classes": 10,
+    "iterations": 3,
+    "emitted_pairs": 480,
+    "identical": true,
+    "full_candidates": 3240,
+    "bounded_candidates": 480
+  },
+  {
+    "examples": 120,
+    "classes": 3,
+    "iterations": 2,
+    "emitted_pairs": 480,
+    "identical": true,
+    "full_candidates": 7260,
+    "bounded_candidates": 480
+  }
+]

@@ -247,3 +247,17 @@ evaluation was performed and no encoder freeze record was created. See
 [runner instructions](ENCODER_RUNNER.md) and the
 [validation report](../reports/runner_validation/SUMMARY.md).
 The 60-run grid remains pending, as does SetFit timing refinement.
+
+## 26 October: SetFit timing and local feasibility
+
+SetFit timing is now measured on CLINC150 b8 and Banking77 b8: 2.0176 and 2.1402
+seconds/update respectively. Training only; no classifier head, checkpoint or
+evaluation. All 44 shared hashes are unchanged and 35 tests pass. The sampler now
+bounds stored candidates while retaining the exact fixed-iteration pair sequence.
+CLINC b64 pair preparation was also verified (384,000 emitted pairs, 116.92 seconds).
+
+The revised grid estimate is 123.50 training hours, 148.20 with a 20% planning buffer.
+The user has 8 hours/day: about 19 compute days, with individual CLINC b64 SetFit runs
+too long for one day without training resume or another compute arrangement.
+The [compute plan](../reports/benchmarks/setfit/SUMMARY.md) records options and remaining
+uncertainty. No paid/cloud job, final grid or encoder freeze was started.

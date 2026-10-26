@@ -3,7 +3,8 @@ import math
 from .training_schedule import training_schedule
 
 
-def forecast(runs, clinc_seconds, ag_seconds, setfit_seconds, modernbert_min_updates=0):
+def forecast(runs, clinc_seconds, ag_seconds, setfit_seconds, modernbert_min_updates=0,
+             setfit_clinc_seconds=None, setfit_banking_seconds=None):
     estimates = []
     for run in runs:
         n = run['training_examples']
@@ -16,6 +17,12 @@ def forecast(runs, clinc_seconds, ag_seconds, setfit_seconds, modernbert_min_upd
             steps = math.ceil(n * 40 / 16)
             seconds = setfit_seconds
             basis = 'MPNet AG News proxy; other datasets not timed'
+            if run['dataset']=='clinc150' and setfit_clinc_seconds is not None:
+                seconds=setfit_clinc_seconds
+                basis='MPNet CLINC150 b8 measured updates; larger budgets extrapolated'
+            elif run['dataset']=='banking77' and setfit_banking_seconds is not None:
+                seconds=setfit_banking_seconds
+                basis='MPNet Banking77 b8 measured updates; b16 extrapolated'
         estimates.append(dict(**run, estimated_optimizer_steps=steps,
                               seconds_per_update_assumption=seconds, timing_basis=basis,
                               estimated_training_hours=steps * seconds / 3600))
@@ -30,5 +37,5 @@ def forecast(runs, clinc_seconds, ag_seconds, setfit_seconds, modernbert_min_upd
                              'SetFit 1 epoch, 20 pair iterations, effective batch 16',
                              'All 60 final runs remain; pilots are not deducted',
                              '20 percent buffer is a planning assumption, not a confidence interval',
-                             'Model loading, prediction, calibration, checkpoint I/O and reruns excluded',
-                             'SetFit non-AG and ModernBERT Banking77 speeds are unmeasured proxies'])
+                             'Model loading, pair preparation, classifier fitting, prediction, calibration, checkpoint I/O and reruns excluded from update-based estimates',
+                             'ModernBERT Banking77 uses a CLINC proxy; SetFit uses dataset benchmarks only where provided, otherwise the AG proxy'])

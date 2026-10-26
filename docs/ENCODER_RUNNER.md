@@ -68,6 +68,8 @@ existing final files are not silently appended to or replaced.
 
 ## Remaining execution work
 
-The runner is not the 60-run experiment itself. Refine SetFit's CLINC throughput,
+The runner is not the 60-run experiment itself. SetFit throughput was measured on
+26 October; see the [compute plan](../reports/benchmarks/setfit/SUMMARY.md). At 8 hours/day,
+some runs require training resume support or another GPU arrangement. Resolve this,
 agree the final compute schedule, record the settings freeze, then launch the grid.
 No official-test scores should guide any settings changes.

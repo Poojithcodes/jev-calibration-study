@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "dataset": "clinc150",
+  "budget": 64,
+  "seed": 13,
+  "training_examples": 9600,
+  "emitted_pairs": 384000,
+  "stored_positive_candidates": 192000,
+  "stored_negative_candidates": 192000,
+  "uncapped_candidate_count": 46084800,
+  "preparation_seconds": 116.91987419995712,
+  "process_memory": {
+    "rss": 834994176,
+    "vms": 1949159424,
+    "num_page_faults": 684341,
+    "peak_wset": 2240851968,
+    "wset": 834994176,
+    "peak_paged_pool": 9299336,
+    "paged_pool": 9299336,
+    "peak_nonpaged_pool": 113072,
+    "nonpaged_pool": 112664,
+    "pagefile": 1949159424,
+    "peak_pagefile": 3357593600,
+    "private": 1949159424
+  },
+  "shared_hashes_unchanged": true,
+  "evaluation": false,
+  "note": "CPU pair preparation only; shuffle index arrays still quadratic; process memory includes Python/library imports"
+}

@@ -1,0 +1,27 @@
+{
+  "dataset": "clinc150",
+  "budget": 8,
+  "seed": 13,
+  "train_examples": 1200,
+  "measured_updates": 200,
+  "warmup_updates": 20,
+  "full_schedule_updates": 3000,
+  "config": {
+    "model_id": "sentence-transformers/paraphrase-mpnet-base-v2",
+    "revision": "6cc9279c672dc57f94445ef259b28a1b736fec8f",
+    "micro_batch_size": 2,
+    "gradient_accumulation_steps": 8,
+    "embedding_epochs": 1,
+    "num_iterations": 20,
+    "body_learning_rate": 2e-05,
+    "max_length": 256,
+    "warmup_proportion": 0.1,
+    "head_C": 1.0,
+    "head_max_iter": 1000,
+    "normalize_embeddings": false,
+    "use_amp": false,
+    "gradient_checkpointing": false
+  },
+  "head_fitted": false,
+  "evaluation": false
+}

@@ -17,3 +17,10 @@ def test_forecast_accounts_for_minimum_update_rule():
     runs = [dict(dataset='ag_news', model='modernbert', training_examples=64)]
     result = forecast(runs, 1, 4, 2, modernbert_min_updates=50)
     assert result['runs'][0]['estimated_optimizer_steps'] == 52
+
+
+def test_dataset_specific_setfit_timings_override_only_matching_dataset():
+    runs=[dict(model='setfit',dataset=d,training_examples=32) for d in ['ag_news','clinc150','banking77']]
+    result=forecast(runs,1,4,2,setfit_clinc_seconds=.5,setfit_banking_seconds=.7)
+    assert [r['seconds_per_update_assumption'] for r in result['runs']]==[2,.5,.7]
+    assert result['hours_by_model']['setfit']==pytest.approx(80*(2+.5+.7)/3600)

@@ -5,10 +5,16 @@ Proposal and team split: the "Jev Calibration Study — Revised Research Proposa
 
 ## Current status — 26 October 2026
 
+SetFit timing refinement is complete: CLINC150 2.02 seconds/update and Banking77
+2.14 seconds/update. The full encoder grid projects to 123.5 training hours (148.2
+with a planning buffer), about 19 compute days at the available 8 hours/day.
+Some individual runs exceed that daily window, so resume support or another GPU
+arrangement is required before launch. See the [compute plan](reports/benchmarks/setfit/SUMMARY.md).
+
 The [general encoder runner](docs/ENCODER_RUNNER.md) now supports all 60 planned
 combinations, defaulting to development-only execution. Final predictions require
 explicit test access and a matching frozen protocol record. The full grid has not
-been launched; SetFit timing refinement and the encoder freeze remain pending.
+been launched; the compute arrangement and encoder freeze remain pending.
 
 ModernBERT training length is selected: ten epochs or at least 100 updates, rounded
 to whole epochs. Across three AG News b8 seeds, mean development accuracy improved
@@ -49,7 +55,7 @@ Jev run commands): [docs/protocol_decisions.md](docs/protocol_decisions.md).
 ```bash
 pip install -r requirements.txt
 copy .env.example .env      # Windows (macOS/Linux: cp); then paste your OpenRouter key into .env
-python -m pytest -q         # 33 tests should pass
+python -m pytest -q         # 35 tests should pass
 ```
 
 The loader downloads missing datasets automatically into `data/raw/`. For the shared

@@ -38,7 +38,8 @@ def freeze_fingerprint(root):
     paths += ['scripts/run_modernbert_pilot.py', 'scripts/run_setfit_pilot.py',
               'scripts/run_encoder.py', 'src/jevcal/encoder_runner.py',
               'src/jevcal/encoder_data.py', 'src/jevcal/training_schedule.py',
-              'src/jevcal/data.py', 'src/jevcal/contract.py', 'requirements.txt']
+              'src/jevcal/data.py', 'src/jevcal/contract.py', 'requirements.txt',
+              'requirements-encoder.txt', 'src/jevcal/setfit_sampling.py']
     return dict(shared_hashes=shared_hashes(root), file_hashes={p:digest(root/p) for p in paths})
 
 

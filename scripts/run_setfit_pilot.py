@@ -48,6 +48,7 @@ def main():
     from jevcal.contract import validate, write_jsonl
     from jevcal.data import load_split
     from jevcal.encoder_data import load_development_run
+    from jevcal.setfit_sampling import bounded_trainer_class
 
     def hashes():
         paths = list((root / 'manifests').glob('*')) + [root / 'reports/split_audit.json', root / 'data/raw/SOURCES.json']
@@ -108,7 +109,7 @@ def main():
         eval_strategy='no', save_strategy='no', logging_steps=10, show_progress_bar=False,
     )
     (out / 'training_args.json').write_text(training_args.to_json_string())
-    trainer = Trainer(model=model, args=training_args, train_dataset=dataset)
+    trainer = bounded_trainer_class(Trainer)(model=model, args=training_args, train_dataset=dataset)
     trainer.st_trainer.args.gradient_accumulation_steps = args.gradient_accumulation_steps
     (out / 'transformers_training_args.json').write_text(trainer.st_trainer.args.to_json_string())
     assert model.model_body.device.type == 'cuda'
