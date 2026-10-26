@@ -1,0 +1,14 @@
+[
+  {
+    "flags": [],
+    "rejected": true,
+    "reason": "--allow-test"
+  },
+  {
+    "flags": [
+      "--allow-test"
+    ],
+    "rejected": true,
+    "reason": "--freeze-record"
+  }
+]

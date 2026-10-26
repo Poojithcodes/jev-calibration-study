@@ -1,0 +1,15 @@
+{
+  "status": "completed_development_only",
+  "train_examples": 32,
+  "dev_examples": 100,
+  "development_accuracy": 0.84,
+  "development_macro_f1": 0.8352144082332762,
+  "train_seconds": 108.28978729998926,
+  "peak_cuda_allocated_bytes": 2430684672,
+  "checkpoint_reload_passed": true,
+  "optimizer_steps_completed": 80,
+  "validate_problems": [],
+  "shared_hashes_unchanged": true,
+  "official_test_evaluated": false,
+  "calibration_evaluated": false
+}

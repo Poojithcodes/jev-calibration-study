@@ -63,7 +63,7 @@ Remaining errors on both datasets are mostly gold-label ambiguity (e.g. AG News 
   schedule, 73% development accuracy and macro-F1 0.7217. No GradScaler; all 20
   optimizer updates completed. The earlier fp16 pilots are retained.
 - Both checkpoints reload successfully; predictions and shared hashes validate.
-  Item 5 (general runner) remains pending; item 2 was completed on 25 Oct below.
+  Items 2 and 5 were implemented on 25 Oct; see the updates below.
   No settings freeze or final test evaluation was performed.
 - Item 4 benchmark complete: CLINC150 b64/s13, 20 timing warmup updates plus
   300 measured updates, mean 3.4807 seconds/update. ModernBERT's current grid
@@ -79,9 +79,19 @@ across seeds 13/42/87. The predeclared rule selected **10 epochs or at least 100
 updates, whichever is longer**, rounded to whole epochs. Mean dev accuracy was
 73.0%, 75.3% and 77.0%; mean macro-F1 was 0.7242, 0.7429 and 0.7651 respectively.
 Use `configs/modernbert_selected.json` for subsequent runs. This does not freeze all
-encoder settings or authorize test-driven adjustments. The general runner and
-SetFit timing refinement remain pending. See the [selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md)
+encoder settings or authorize test-driven adjustments. SetFit timing refinement
+remains pending. See the [selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md)
 for the fixed selection criterion, per-seed results, limitations and revised forecast.
+
+## General encoder runner — 25 Oct
+
+`scripts/run_encoder.py` handles both encoders across the agreed grid, with a
+development default and guarded final mode. SetFit now accepts dataset, budget and
+seed instead of hard-coding AG News b8/s13. Final mode verifies a protocol fingerprint
+before loading held-out evaluation data, validates prediction contracts, and saves
+one calibration/test file per run (including AG-Fresh when requested and hash-bound).
+All 60 development preflight checks pass. No frozen encoder record or final test
+predictions were created. See [runner instructions](ENCODER_RUNNER.md).
 
 ## Jev side frozen (24 Oct)
 

@@ -1,0 +1,16 @@
+[
+  {
+    "model": "setfit",
+    "seed": 42,
+    "rows": 100,
+    "max_absolute_logit_difference": 1.1920928955078125e-06,
+    "shared_hashes_unchanged": true
+  },
+  {
+    "model": "modernbert",
+    "seed": 13,
+    "rows": 100,
+    "max_absolute_logit_difference": 0.0,
+    "shared_hashes_unchanged": true
+  }
+]

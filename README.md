@@ -3,13 +3,18 @@
 How many labels does a fine-tuned encoder need to match Jev on calibration and selective prediction?
 Proposal and team split: the "Jev Calibration Study — Revised Research Proposal" doc.
 
-## Current status — 25 October 2026
+## Current status — 26 October 2026
+
+The [general encoder runner](docs/ENCODER_RUNNER.md) now supports all 60 planned
+combinations, defaulting to development-only execution. Final predictions require
+explicit test access and a matching frozen protocol record. The full grid has not
+been launched; SetFit timing refinement and the encoder freeze remain pending.
 
 ModernBERT training length is selected: ten epochs or at least 100 updates, rounded
 to whole epochs. Across three AG News b8 seeds, mean development accuracy improved
 from 73% to 77%. These are development selection results, not final test scores.
 See the [nine-run comparison](reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md)
-and `configs/modernbert_selected.json`. The general encoder runner is next.
+and `configs/modernbert_selected.json`.
 
 CLINC150 b64 ModernBERT timing is complete: 300 measured updates averaged
 3.48 seconds each, with zero skipped updates. The current ModernBERT grid projects
@@ -44,7 +49,7 @@ Jev run commands): [docs/protocol_decisions.md](docs/protocol_decisions.md).
 ```bash
 pip install -r requirements.txt
 copy .env.example .env      # Windows (macOS/Linux: cp); then paste your OpenRouter key into .env
-python -m pytest -q         # 27 tests should pass
+python -m pytest -q         # 33 tests should pass
 ```
 
 The loader downloads missing datasets automatically into `data/raw/`. For the shared

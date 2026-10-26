@@ -16,6 +16,9 @@ from collections import Counter
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=Path, required=True)
+    parser.add_argument('--dataset', choices=['ag_news', 'banking77', 'clinc150'], default='ag_news')
+    parser.add_argument('--budget', type=int, default=8)
+    parser.add_argument('--seed', type=int, default=13)
     parser.add_argument('--model-id', default='sentence-transformers/all-MiniLM-L6-v2')
     parser.add_argument('--revision')
     parser.add_argument('--run-tag', default='')
@@ -52,11 +55,11 @@ def main():
 
     before = hashes()
     suffix = f'__{args.run_tag}' if args.run_tag else ''
-    out = root / f'reports/pilots/setfit/ag_news__b8__s13{suffix}'
+    out = root / f'reports/pilots/setfit/{args.dataset}__b{args.budget}__s{args.seed}{suffix}'
     out.mkdir(parents=True, exist_ok=False)
     (out / 'shared_hashes_before.json').write_text(json.dumps(before, indent=2))
     assert torch.cuda.is_available(), 'CUDA computation required for this pilot'
-    set_seed(13)
+    set_seed(args.seed)
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
     a = torch.randn(128, 128, device='cuda', requires_grad=True)
@@ -71,38 +74,18 @@ def main():
     }
     (out / 'environment.json').write_text(json.dumps(environment, indent=2))
     print(json.dumps(environment), flush=True)
-    order = [r['name'] for r in json.loads((root / 'configs/labels/ag_news.json').read_text())['labels']]
-
-    def ids(name):
-        values = (root / 'manifests' / name).read_text().splitlines()
-        assert len(values) == len(set(values))
-        return values
-
-    train_ids = ids('ag_news_train_b8_s13.txt')
-    dev_ids = ids('ag_news_dev_ids.txt')
-    cal_ids = ids('ag_news_calibration_ids.txt')
-    test_ids = ids('ag_news_test_ids.txt')
-    assert not set(train_ids) & (set(dev_ids) | set(cal_ids) | set(test_ids))
-    assert not set(dev_ids) & (set(cal_ids) | set(test_ids))
-    # Only the supplied training snapshot is loaded, for both train and development.
-    rows = {r['example_id']: r for r in load_split('ag_news', 'train')}
-    train, dev = [[rows[i] for i in group] for group in [train_ids, dev_ids]]
-    assert Counter(r['label'] for r in train) == {c: 8 for c in order}
-    assert Counter(r['label'] for r in dev) == {c: 25 for c in order}
-    norm = lambda r: ' '.join(r['text'].casefold().split())
-    assert not {norm(r) for r in train} & {norm(r) for r in dev}
-    # Also enforce source-snapshot integrity and calibration text isolation.
-    order, train, dev = load_development_run(root, 'ag_news', 8, 13)
+    order, train, dev = load_development_run(root, args.dataset, args.budget, args.seed)
+    dev_ids = [r['example_id'] for r in dev]
     model_id = args.model_id
     revision = args.revision or HfApi().model_info(model_id).sha
     config = {
-        'model_id': model_id, 'revision': revision, 'budget': 8, 'seed': 13,
+        'model_id': model_id, 'revision': revision, 'dataset': args.dataset, 'budget': args.budget, 'seed': args.seed,
         'embedding_epochs': 1, 'batch_size': args.micro_batch_size,
         'gradient_accumulation_steps': args.gradient_accumulation_steps,
         'effective_batch_size': args.micro_batch_size * args.gradient_accumulation_steps, 'num_iterations': 20,
         'body_learning_rate': 2e-5, 'max_length': 256, 'warmup_proportion': 0.1,
         'loss': 'CosineSimilarityLoss', 'head': 'LogisticRegression',
-        'head_params': {'C': 1.0, 'max_iter': 1000, 'random_state': 13},
+        'head_params': {'C': 1.0, 'max_iter': 1000, 'random_state': args.seed},
         'normalize_embeddings': False, 'use_amp': False,
         'gradient_checkpointing': args.gradient_checkpointing,
         'evaluation': 'development only; no early stopping or hyperparameter search',
@@ -121,7 +104,7 @@ def main():
     training_args = TrainingArguments(
         output_dir=str(out / 'training'), batch_size=args.micro_batch_size, num_epochs=1,
         num_iterations=20, body_learning_rate=2e-5, max_length=256,
-        warmup_proportion=0.1, seed=13, use_amp=False, report_to='none',
+        warmup_proportion=0.1, seed=args.seed, use_amp=False, report_to='none',
         eval_strategy='no', save_strategy='no', logging_steps=10, show_progress_bar=False,
     )
     (out / 'training_args.json').write_text(training_args.to_json_string())
@@ -156,8 +139,8 @@ def main():
     np.testing.assert_allclose(restored_logits, logits[:2], rtol=1e-4, atol=1e-4)
     records = []
     for r, logit, prob in zip(dev, logits, probs):
-        records.append(dict(example_id=r['example_id'], dataset='ag_news', split='dev', model='setfit',
-                            label_config=None, budget=8, seed=13, true_label=r['label'], is_oos=False,
+        records.append(dict(example_id=r['example_id'], dataset=args.dataset, split='dev', model='setfit',
+                            label_config=None, budget=args.budget, seed=args.seed, true_label=r['label'], is_oos=False,
                             class_order=order, class_probabilities=prob.tolist(),
                             predicted_label=order[int(np.argmax(prob))], logits=logit.tolist(),
                             checkpoint=str(checkpoint.relative_to(root)), train_seconds=train_seconds, config=config))
@@ -180,7 +163,7 @@ def main():
     }
     (out / 'result.json').write_text(json.dumps(result, indent=2))
     with (root / 'docs/run_ledger.csv').open('a', newline='', encoding='utf-8') as f:
-        csv.writer(f).writerow([datetime.now(timezone(timedelta(hours=5, minutes=30))).date(), 'Poojith', 'ag_news', 'setfit', '', 8, 13,
+        csv.writer(f).writerow([datetime.now(timezone(timedelta(hours=5, minutes=30))).date(), 'Poojith', args.dataset, 'setfit', '', args.budget, args.seed,
                                str(prediction_path.relative_to(root)), str(checkpoint.relative_to(root)),
                                len(records), train_seconds, 0, True,
                                f'Development-only pilot; not final evaluation. Variant: {args.run_tag or "initial"}.'])

@@ -1,0 +1,486 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 13,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 42,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 87,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 13,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 42,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 87,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 32,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 64,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 13,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 42,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 32,
+      "seed": 87,
+      "train_examples": 128,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 13,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 42,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "modernbert",
+      "dataset": "ag_news",
+      "budget": 64,
+      "seed": 87,
+      "train_examples": 256,
+      "dev_examples": 100
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 616,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "modernbert",
+      "dataset": "banking77",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 1232,
+      "dev_examples": 385
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 13,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 42,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 87,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 13,
+      "train_examples": 9600,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 42,
+      "train_examples": 9600,
+      "dev_examples": 750
+    },
+    {
+      "model": "setfit",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 87,
+      "train_examples": 9600,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 13,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 42,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 8,
+      "seed": 87,
+      "train_examples": 1200,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 13,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 42,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 16,
+      "seed": 87,
+      "train_examples": 2400,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 13,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 42,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 32,
+      "seed": 87,
+      "train_examples": 4800,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 13,
+      "train_examples": 9600,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 42,
+      "train_examples": 9600,
+      "dev_examples": 750
+    },
+    {
+      "model": "modernbert",
+      "dataset": "clinc150",
+      "budget": 64,
+      "seed": 87,
+      "train_examples": 9600,
+      "dev_examples": 750
+    }
+  ],
+  "official_test_loaded": false
+}

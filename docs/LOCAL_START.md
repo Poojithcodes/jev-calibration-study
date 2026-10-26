@@ -231,3 +231,19 @@ used and no calibration/test evaluation was performed. The full report and revis
 37.51-hour ModernBERT forecast are in
 [the selection report](../reports/training_length/modernbert_ag_b8_20261025/SUMMARY.md).
 Next: general encoder runner and SetFit throughput refinement before full-grid launch.
+
+## 26 October: general runner validation complete
+
+Implemented `scripts/run_encoder.py` for both models and all 60 planned combinations.
+All development preflight checks pass. Real GPU smoke runs completed for SetFit
+AG News b8/s42 (84% dev accuracy) and ModernBERT b8/s13 (75%, reproducing the earlier
+selected-schedule result). Both checkpoints reload and shared hashes are unchanged.
+The ModernBERT smoke run crossed a long interruption; its elapsed time must not
+replace the controlled throughput benchmark.
+
+All 33 tests pass, including synthetic final-output and AG-Fresh checks. Final mode
+requires explicit test access and a matching protocol freeze record. No real final
+evaluation was performed and no encoder freeze record was created. See
+[runner instructions](ENCODER_RUNNER.md) and the
+[validation report](../reports/runner_validation/SUMMARY.md).
+The 60-run grid remains pending, as does SetFit timing refinement.
